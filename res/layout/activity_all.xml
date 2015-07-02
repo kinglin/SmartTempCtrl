@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        >
+         <ImageButton
+            android:id="@+id/ibtn_members"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:src="@drawable/ic_launcher"/>
+         <ImageButton
+            android:id="@+id/ibtn_setting"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:src="@drawable/ic_launcher"/>"
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/relayout_all"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+       >
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+       >
+         <ImageButton
+            android:id="@+id/ibtn_temp"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+	        android:src="@drawable/ic_launcher"/>
+        <ImageButton
+            android:id="@+id/ibtn_timer"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toLeftOf="@id/ibtn_temp"
+	        android:src="@drawable/ic_launcher"/>
+        <ImageButton
+            android:id="@+id/ibtn_tools"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/ibtn_temp"
+	        android:src="@drawable/ic_launcher"/>
+    </RelativeLayout>
+
+</LinearLayout>
