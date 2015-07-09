@@ -103,12 +103,18 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 						1, 
 						str_remark, 
 						int_content);
-				MyTimerDaoImp mtdi = new MyTimerDaoImp();
+				MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
 				mtdi.addTimer(myTimer);
 				
 				if (null != myAddConfirmListener) {
 					myAddConfirmListener.ReturnToTimerList();
 				}
+				
+				//初始化计时器属性
+				long_downtime = 0;
+				long_circle = 0;
+				int_content = 1;
+				str_remark = "";
 			}
 		});
 

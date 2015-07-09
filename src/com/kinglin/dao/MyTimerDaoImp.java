@@ -3,15 +3,19 @@ package com.kinglin.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.kinglin.model.MyTimer;
 
 public class MyTimerDaoImp implements MyTimerDao {
 	
 	SQLiteDatabase db;
 	
-	public MyTimerDaoImp() {
+	public MyTimerDaoImp(Activity activity) {
+		DBHelper helper=new DBHelper(activity, "user.db", null, 1);
+	    db=helper.getWritableDatabase();
 	}
 
 	@Override
