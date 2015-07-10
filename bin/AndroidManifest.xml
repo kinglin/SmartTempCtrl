@@ -27,6 +27,9 @@
             android:name=".AllActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <service
+            android:name="com.kinglin.service.TimerService"
+            android:enabled="true"/>
     </application>
 
 </manifest>

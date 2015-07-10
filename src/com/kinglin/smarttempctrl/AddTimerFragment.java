@@ -26,7 +26,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 
 	SeekBar sb_downtime;
 	TextView tv_downtime,tv_circletime;
-	ImageButton ibtn_circle,ibtn_content,ibtn_remark,ibtn_music,ibtn_timerconfirm;
+	ImageButton ibtn_circle,ibtn_content,ibtn_remark,ibtn_music,ibtn_timerconfirm,ibtn_timercancle;
 	EditText et_circle;
 	Button btn_circleconfirm;
 	
@@ -35,12 +35,6 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 	long long_circle = 0;
 	int int_content = 1;
 	String str_remark = "";
-
-	public interface OnAddConfirmClickListener {
-		public void ReturnToTimerList();
-	}
-	
-	private OnAddConfirmClickListener myAddConfirmListener;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +47,22 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		return inflater.inflate(R.layout.frag_addtimer, container, false);
 	}
 	
+	//确定添加按钮回调
+	public interface OnAddConfirmClickListener {
+		public void ReturnToTimerList();
+	}
+	private OnAddConfirmClickListener myAddConfirmListener;
 	public void setOnAddConfirmClickListener(OnAddConfirmClickListener onAddConfirmListener) {
 		myAddConfirmListener = onAddConfirmListener;
+	}
+
+	//取消添加按钮回调
+	public interface OnAddCancleClickListener {
+		public void ReturnToTimerList();
+	}
+	private OnAddCancleClickListener myAddCancleListener;
+	public void setOnAddCancleClickListener(OnAddCancleClickListener onAddCancleListener) {
+		myAddCancleListener = onAddCancleListener;
 	}
 
 	@Override
@@ -69,6 +77,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		ibtn_remark = (ImageButton)view.findViewById(R.id.ibtn_remark);
 		ibtn_music = (ImageButton)view.findViewById(R.id.ibtn_music);
 		ibtn_timerconfirm = (ImageButton)view.findViewById(R.id.ibtn_timerconfirm);
+		ibtn_timercancle = (ImageButton)view.findViewById(R.id.ibtn_timercancle);
 		sb_downtime.setOnSeekBarChangeListener(this);
 
 		//添加循环按钮响应
@@ -117,6 +126,21 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 				str_remark = "";
 			}
 		});
+		
+		ibtn_timercancle.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//初始化计时器属性
+				long_downtime = 0;
+				long_circle = 0;
+				int_content = 1;
+				str_remark = "";
+				
+				if (null != myAddCancleListener) {
+					myAddCancleListener.ReturnToTimerList();
+				}
+			}
+		});
 
 	}
 
@@ -143,9 +167,9 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 					long_circle = 0;
 					tv_circletime.setText("no circle");
 					popwin_circle.dismiss();
-				}else if (Integer.parseInt(et_circle.getText().toString()) < 5) {
+				}else if (Integer.parseInt(et_circle.getText().toString()) < 1) {
 					//小于5时不行
-					Toast.makeText(getActivity(), "circle can be more than 5m or 0", 1000).show();
+					Toast.makeText(getActivity(), "circle can be more than 1m or 0", 1000).show();
 				}else {
 					//正常输入时，存储循环的值
 					long_circle = Long.parseLong(et_circle.getText().toString())*60*1000;
@@ -267,28 +291,28 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 
 		switch (progress/20) {
 		case 0:
-			str_downtime = "5 minutes";
-			long_downtime = 5*60*1000;
+			str_downtime = "1 minutes";
+			long_downtime = 1*60*1000;
 			break;
 		case 1:
+			str_downtime = "10 minutes";
+			long_downtime = 10*60*1000;
+			break;
+		case 2:
+			str_downtime = "15 minutes";
+			long_downtime = 15*60*1000;
+			break;
+		case 3:
 			str_downtime = "30 minutes";
 			long_downtime = 30*60*1000;
 			break;
-		case 2:
+		case 4:
 			str_downtime = "1 hour";
 			long_downtime = 60*60*1000;
 			break;
-		case 3:
+		case 5:
 			str_downtime = "2 hours";
 			long_downtime = 2*60*60*1000;
-			break;
-		case 4:
-			str_downtime = "6 hours";
-			long_downtime = 6*60*60*1000;
-			break;
-		case 5:
-			str_downtime = "12 hours";
-			long_downtime = 12*60*60*1000;
 			break;
 		default:
 			str_downtime = "5 minutes";

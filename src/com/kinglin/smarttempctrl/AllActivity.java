@@ -1,6 +1,7 @@
 package com.kinglin.smarttempctrl;
 
 
+import com.kinglin.smarttempctrl.AddTimerFragment.OnAddCancleClickListener;
 import com.kinglin.smarttempctrl.AddTimerFragment.OnAddConfirmClickListener;
 import com.kinglin.smarttempctrl.TimerFragment.OnAddClickListener;
 
@@ -41,6 +42,17 @@ public class AllActivity extends FragmentActivity {
         
         //定时器添加完毕响应
         addTimerFragment.setOnAddConfirmClickListener(new OnAddConfirmClickListener() {
+			@Override
+			public void ReturnToTimerList() {
+				FragmentManager fm = getSupportFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				ft.replace(R.id.relayout_all, timerFragment);
+				ft.commit();
+			}
+		});
+        
+        //定时取消添加响应
+        addTimerFragment.setOnAddCancleClickListener(new OnAddCancleClickListener() {
 			@Override
 			public void ReturnToTimerList() {
 				FragmentManager fm = getSupportFragmentManager();

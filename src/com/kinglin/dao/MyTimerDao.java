@@ -11,4 +11,10 @@ public interface MyTimerDao {
 	
 	//获得所有的定时提醒
 	public List<MyTimer> getAllMyTimers();
+	
+	//更新特定定时器
+	public void updateTimer(MyTimer myTimer);
+	
+	//删除定时器
+	public void deleteTimer(MyTimer myTimer);
 }

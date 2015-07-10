@@ -3,6 +3,8 @@ package com.kinglin.smarttempctrl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -51,7 +53,9 @@ public class TimerFragment extends Fragment {
 		lv_timerlist = (ListView)view.findViewById(R.id.lv_timerlist);
 		
 		//更新定时器列表
-		updateListview();
+		MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
+		List<MyTimer> myTimers = mtdi.getAllMyTimers();
+		updateListview(myTimers);
 		
 		//添加定时器按钮响应
 		ibtn_addtimer.setOnClickListener(new View.OnClickListener() {
@@ -64,30 +68,28 @@ public class TimerFragment extends Fragment {
 		});
 	}
 	
-	
-	
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
-			updateListview();
+			//每5秒刷新一次listview
+			Timer timer = new Timer();
+			timer.schedule(new RefreshLiseview(), 0, 5*1000);
 		}
 	}
 
-	public void updateListview() {
+	//listview刷新函数
+	public void updateListview(List<MyTimer> myTimers) {
 		lv_timerlist.removeAllViewsInLayout();
-		
-		MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
-		List<MyTimer> myTimers = mtdi.getAllMyTimers();
 		
 		if (myTimers.size() != 0) {
 			List<HashMap<String, Object>> data = new ArrayList<HashMap<String,Object>>(); 
 			for(MyTimer myTimer : myTimers){  
 	            HashMap<String, Object> item = new HashMap<String, Object>();
 	            item.put("timerId", myTimer.getId());
-	            int downtime = (int) ((myTimer.getRingtime()-System.currentTimeMillis())/1000/60);
+	            int downtime = (int) ((myTimer.getRingtime()-System.currentTimeMillis())/1000);
 	            int circle = (int) (myTimer.getCircle()/1000/60);
-	            item.put("downtime", "downtime: "+downtime+" minutes");
+	            item.put("downtime", "downtime: "+downtime+" seconds");
 	            item.put("circle", "circle: "+circle+" minutes");
 	            item.put("content", showContent(myTimer.getContent()));
 	            item.put("remark", myTimer.getRemark());
@@ -102,6 +104,18 @@ public class TimerFragment extends Fragment {
 			//实现列表的显示  
 	        lv_timerlist.setAdapter(adapter);
 		}
+	}
+	
+	//这个类用来周期性更新listview
+	public class RefreshLiseview extends TimerTask{
+
+		@Override
+		public void run() {
+			MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
+			List<MyTimer> myTimers = mtdi.getAllMyTimers();
+			updateListview(myTimers);
+		}
+		
 	}
 	
 	public int showContent(int content){
@@ -121,8 +135,6 @@ public class TimerFragment extends Fragment {
 		case 7:
 			return R.drawable.ic_launcher;
 		case 8:
-			return R.drawable.ic_launcher;
-		case 9:
 			return R.drawable.ic_launcher;
 		default:
 			return R.drawable.ic_launcher;

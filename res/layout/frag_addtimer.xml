@@ -69,8 +69,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/ibtn_content"
-        android:layout_alignRight="@+id/ibtn_music"
+        android:layout_alignRight="@+id/tv_circletime"
         android:layout_below="@+id/ibtn_content"
+        android:src="@drawable/ic_launcher" />
+
+    <ImageButton
+        android:id="@+id/ibtn_timercancle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ibtn_music"
+        android:layout_alignTop="@+id/ibtn_timerconfirm"
         android:src="@drawable/ic_launcher" />
 
 </RelativeLayout>
