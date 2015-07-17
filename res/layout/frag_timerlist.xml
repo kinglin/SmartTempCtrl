@@ -8,7 +8,8 @@
         android:id="@+id/ibtn_addtimer"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:src="@drawable/ic_launcher" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/timer_button_push_01" />
 
     <ListView
         android:id="@+id/lv_timerlist"

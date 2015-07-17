@@ -3,8 +3,6 @@ package com.kinglin.smarttempctrl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -72,9 +70,9 @@ public class TimerFragment extends Fragment {
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
-			//每5秒刷新一次listview
-			Timer timer = new Timer();
-			timer.schedule(new RefreshLiseview(), 0, 5*1000);
+			MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
+			List<MyTimer> myTimers = mtdi.getAllMyTimers();
+			updateListview(myTimers);
 		}
 	}
 
@@ -106,38 +104,26 @@ public class TimerFragment extends Fragment {
 		}
 	}
 	
-	//这个类用来周期性更新listview
-	public class RefreshLiseview extends TimerTask{
-
-		@Override
-		public void run() {
-			MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
-			List<MyTimer> myTimers = mtdi.getAllMyTimers();
-			updateListview(myTimers);
-		}
-		
-	}
-	
 	public int showContent(int content){
 		switch (content) {
 		case 1:
-			return R.drawable.ic_launcher;
+			return R.drawable.timer_sector_ico_01;
 		case 2:
-			return R.drawable.ic_launcher;
+			return R.drawable.timer_sector_ico_02;
 		case 3:
-			return R.drawable.ic_launcher;
+			return R.drawable.timer_sector_ico_03;
 		case 4:
-			return R.drawable.ic_launcher;
+			return R.drawable.timer_sector_ico_04;
 		case 5:
-			return R.drawable.ic_launcher;
+			return R.drawable.timer_sector_ico_05;
 		case 6:
-			return R.drawable.ic_launcher;
+			return R.drawable.timer_sector_ico_06;
 		case 7:
-			return R.drawable.ic_launcher;
+			return R.drawable.timer_sector_ico_07;
 		case 8:
-			return R.drawable.ic_launcher;
+			return R.drawable.timer_sector_ico_08;
 		default:
-			return R.drawable.ic_launcher;
+			return R.drawable.timer_sector_ico_01;
 		}
 	}
 	

@@ -1,5 +1,9 @@
 package com.kinglin.smarttempctrl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -8,18 +12,23 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kinglin.dao.MyTimerDaoImp;
 import com.kinglin.model.MyTimer;
+import com.kinglin.tools.MusicLoader;
 
 @SuppressLint({ "InflateParams", "ShowToast" })
 public class AddTimerFragment extends Fragment implements OnSeekBarChangeListener{
@@ -30,12 +39,14 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 	EditText et_circle;
 	Button btn_circleconfirm;
 	
+	ListView lv_musiclist;
+
 	MyTimer myTimer;
 	long long_downtime = 0;
 	long long_circle = 0;
 	int int_content = 1;
 	String str_remark = "";
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +57,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.frag_addtimer, container, false);
 	}
-	
+
 	//确定添加按钮回调
 	public interface OnAddConfirmClickListener {
 		public void ReturnToTimerList();
@@ -87,21 +98,21 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 				showPopCircle(v);
 			}
 		});
-		
+
 		ibtn_content.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showPopContent(v);
 			}
 		});
-	
+
 		ibtn_remark.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showPopRemark(v);
 			}
 		});
-	
+
 		ibtn_timerconfirm.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -114,11 +125,11 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 						int_content);
 				MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
 				mtdi.addTimer(myTimer);
-				
+
 				if (null != myAddConfirmListener) {
 					myAddConfirmListener.ReturnToTimerList();
 				}
-				
+
 				//初始化计时器属性
 				long_downtime = 0;
 				long_circle = 0;
@@ -126,7 +137,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 				str_remark = "";
 			}
 		});
-		
+
 		ibtn_timercancle.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -135,13 +146,20 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 				long_circle = 0;
 				int_content = 1;
 				str_remark = "";
-				
+
 				if (null != myAddCancleListener) {
 					myAddCancleListener.ReturnToTimerList();
 				}
 			}
 		});
 
+		ibtn_music.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				showPopMusic(v);
+			}
+		});
 	}
 
 	public void showPopCircle(View v) {
@@ -155,10 +173,10 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		location[1] = 50;
 		v.getLocationOnScreen(location);
 		popwin_circle.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1]);
-	
+
 		et_circle = (EditText)popView.findViewById(R.id.et_circle);
 		btn_circleconfirm = (Button)popView.findViewById(R.id.btn_circleconfirm);
-		
+
 		btn_circleconfirm.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -191,7 +209,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		location[1] = 50;
 		v.getLocationOnScreen(location);
 		popwin_content.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1]);
-		
+
 		ImageButton ibtn_food1 = (ImageButton) popView.findViewById(R.id.ibtn_food1);
 		ImageButton ibtn_food2 = (ImageButton) popView.findViewById(R.id.ibtn_food2);
 		ImageButton ibtn_food3 = (ImageButton) popView.findViewById(R.id.ibtn_food3);
@@ -200,7 +218,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		ImageButton ibtn_life2 = (ImageButton) popView.findViewById(R.id.ibtn_life2);
 		ImageButton ibtn_life3 = (ImageButton) popView.findViewById(R.id.ibtn_life3);
 		ImageButton ibtn_life4 = (ImageButton) popView.findViewById(R.id.ibtn_life4);
-		
+
 		ibtn_food1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -257,7 +275,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 				popwin_content.dismiss();
 			}
 		});
-		
+
 	}
 
 	public void showPopRemark(View v) {
@@ -271,10 +289,10 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		location[1] = 50;
 		v.getLocationOnScreen(location);
 		popwin_remark.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1]);
-		
+
 		final EditText et_remark = (EditText) popView.findViewById(R.id.et_remark);
 		Button btn_addremark = (Button) popView.findViewById(R.id.btn_addremark);
-		
+
 		btn_addremark.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -283,7 +301,42 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			}
 		});
 	}
-	
+
+	public void showPopMusic(View v) {
+		
+		MusicLoader musicLoader = MusicLoader.instance(getActivity().getContentResolver());
+		List<MusicLoader.MusicInfo> musicInfos = musicLoader.getMusicList();
+		
+		View popView = getActivity().getLayoutInflater().inflate(R.layout.pop_choosemusic, null);
+		final PopupWindow popwin_music = new PopupWindow(popView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		
+		//控件初始化
+		lv_musiclist = (ListView)v.findViewById(R.id.lv_musiclist);
+
+		//将获取的音乐信息显示在listview上
+		updateMusicList(musicInfos);
+		
+		popwin_music.setFocusable(true);
+		popwin_music.setBackgroundDrawable(new ColorDrawable());
+		popwin_music.update();  
+		int location[] = new int[2];
+		location[0] = 50;
+		location[1] = 50;
+		v.getLocationOnScreen(location);
+		popwin_music.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1]);
+		
+		
+		//list条目点击响应
+		lv_musiclist.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+			}
+		});
+
+	}
+
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
@@ -330,4 +383,27 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 	public void onStopTrackingTouch(SeekBar seekBar) {
 	}
 
+	public void updateMusicList(List<MusicLoader.MusicInfo> musicInfos) {
+		
+		//lv_musiclist.removeAllViewsInLayout();
+		
+		if (musicInfos.size() != 0) {
+			List<HashMap<String, Object>> data = new ArrayList<HashMap<String,Object>>(); 
+			for( MusicLoader.MusicInfo musicInfo : musicInfos){  
+				HashMap<String, Object> item = new HashMap<String, Object>();
+				item.put("musicId", musicInfo.getId());
+				item.put("musicname", musicInfo.getTitle());
+				item.put("musicartist", musicInfo.getArtist());
+				item.put("musicduration", musicInfo.getDuration());
+
+				data.add(item);  
+			}  
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(), data, R.layout.lvitem_musiclist,   
+					new String[]{"musicname","musicartist","musicduration"}, 
+					new int[]{R.id.tv_musicname, R.id.tv_musicartist,R.id.tv_musicduration});
+
+			//实现列表的显示  
+			lv_musiclist.setAdapter(adapter);
+		}
+	}
 }

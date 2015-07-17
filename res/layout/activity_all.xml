@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/background_03">
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,16 +11,18 @@
         >
          <ImageButton
             android:id="@+id/ibtn_members"
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+            android:layout_width="65dp"
+	        android:layout_height="65dp"
+	        android:scaleType="fitCenter"
 	        android:layout_alignParentLeft="true"
-	        android:src="@drawable/ic_launcher"/>
+	        android:src="@drawable/tag_cloud"/>
          <ImageButton
             android:id="@+id/ibtn_setting"
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+            android:layout_width="65dp"
+	        android:layout_height="65dp"
+	        android:scaleType="fitCenter"
 	        android:layout_alignParentRight="true"
-	        android:src="@drawable/ic_launcher"/>"
+	        android:src="@drawable/tag_setup"/>"
     </RelativeLayout>
     
     <RelativeLayout 
@@ -35,22 +38,25 @@
        >
          <ImageButton
             android:id="@+id/ibtn_temp"
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+            android:layout_width="65dp"
+	        android:layout_height="65dp"
+	        android:scaleType="fitCenter"
 	        android:layout_centerInParent="true"
-	        android:src="@drawable/ic_launcher"/>
+	        android:src="@drawable/button_main_01"/>
         <ImageButton
             android:id="@+id/ibtn_timer"
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+            android:layout_width="65dp"
+	        android:layout_height="65dp"
+	        android:scaleType="fitCenter"
 	        android:layout_toLeftOf="@id/ibtn_temp"
-	        android:src="@drawable/ic_launcher"/>
+	        android:src="@drawable/button_timer_01"/>
         <ImageButton
             android:id="@+id/ibtn_tools"
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+            android:layout_width="65dp"
+	        android:layout_height="65dp"
+	        android:scaleType="fitCenter"
 	        android:layout_toRightOf="@id/ibtn_temp"
-	        android:src="@drawable/ic_launcher"/>
+	        android:src="@drawable/button_gadget_01"/>
     </RelativeLayout>
 
 </LinearLayout>

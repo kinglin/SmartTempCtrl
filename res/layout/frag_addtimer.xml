@@ -31,52 +31,58 @@
 
     <ImageButton
         android:id="@+id/ibtn_circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+	    android:layout_height="65dp"
+	    android:scaleType="fitCenter"
         android:layout_below="@+id/sb_downtime"
         android:layout_marginRight="14dp"
         android:layout_toLeftOf="@+id/tv_circletime"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/timer_repeat" />
 
     <ImageButton
         android:id="@+id/ibtn_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+	    android:layout_height="65dp"
+	    android:scaleType="fitCenter"
         android:layout_alignLeft="@+id/ibtn_circle"
         android:layout_below="@+id/ibtn_circle"
         android:layout_marginTop="15dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/timer_sector_ico_01" />
 
     <ImageButton
         android:id="@+id/ibtn_remark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+	    android:layout_height="65dp"
+	    android:scaleType="fitCenter"
         android:layout_alignLeft="@+id/tv_circletime"
         android:layout_alignTop="@+id/ibtn_content"
         android:src="@drawable/ic_launcher" />
 
     <ImageButton
         android:id="@+id/ibtn_music"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+	    android:layout_height="65dp"
+	    android:scaleType="fitCenter"
         android:layout_alignTop="@+id/ibtn_remark"
         android:layout_marginLeft="17dp"
         android:layout_toRightOf="@+id/ibtn_remark"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/timer_button_music_01" />
 
     <ImageButton
         android:id="@+id/ibtn_timerconfirm"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+	    android:layout_height="65dp"
+	    android:scaleType="fitCenter"
         android:layout_alignLeft="@+id/ibtn_content"
         android:layout_alignRight="@+id/tv_circletime"
         android:layout_below="@+id/ibtn_content"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/timer_button_done_01" />
 
     <ImageButton
         android:id="@+id/ibtn_timercancle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+	    android:layout_height="65dp"
+	    android:scaleType="fitCenter"
         android:layout_alignLeft="@+id/ibtn_music"
         android:layout_alignTop="@+id/ibtn_timerconfirm"
         android:src="@drawable/ic_launcher" />
