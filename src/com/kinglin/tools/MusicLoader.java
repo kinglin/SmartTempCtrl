@@ -2,12 +2,11 @@ package com.kinglin.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Audio.Media;
 import android.util.Log;
@@ -16,13 +15,13 @@ public class MusicLoader {
 
 	private static final String TAG = "com.kinglin.tools.MusicLoader";  
 
-	private static List<MusicInfo> musicList = new ArrayList<MusicInfo>();  
+	private List<MusicInfo> musicList = new ArrayList<MusicInfo>();  
 
-	private static MusicLoader musicLoader;  
-
-	private static ContentResolver contentResolver = null;
+	private ContentResolver contentResolver = null;
+	
 	//Uri，指向external的database  
-	private Uri contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;     
+	private Uri contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;   
+	
 	//projection：选择的列; where：过滤条件; sortOrder：排序。  
 	private String[] projection = {  
 			Media._ID,  
@@ -33,20 +32,15 @@ public class MusicLoader {
 			Media.DURATION,           
 			Media.SIZE  
 	};  
-	//private String where =  "mime_type in ('audio/mpeg','audio/x-wav') and bucket_display_name <> 'audio' and is_music > 0 " ;  
+	private String where =  "mime_type = 'audio/mpeg' and is_music > 0 " ;  
 	private String sortOrder = MediaStore.Audio.Media.DEFAULT_SORT_ORDER;  
 
-	public static MusicLoader instance(ContentResolver pContentResolver){  
-		if(musicLoader == null){  
-			contentResolver = pContentResolver;
-			musicLoader = new MusicLoader();              
-		}  
-		return musicLoader;  
+	public MusicLoader(ContentResolver contentResolver){ 
+		this.contentResolver = contentResolver;
 	}  
 
-	private MusicLoader(){   //利用ContentResolver的query函数来查询数据，然后将得到的结果放到MusicInfo对象中，最后放到数组中  
-		
-		Cursor cursor = contentResolver.query(contentUri, projection, null, null, sortOrder);
+	public List<MusicInfo> getMusicList(){  
+		Cursor cursor = contentResolver.query(contentUri, projection, where, null, sortOrder);
 		if(cursor == null){  
 			Log.v(TAG,"Line(37  )   Music Loader cursor == null.");  
 		}else if(!cursor.moveToFirst()){  
@@ -78,9 +72,6 @@ public class MusicLoader {
 
 			}while(cursor.moveToNext());  
 		}  
-	}  
-
-	public List<MusicInfo> getMusicList(){  
 		return musicList;  
 	}  
 
@@ -88,117 +79,4 @@ public class MusicLoader {
 		Uri uri = ContentUris.withAppendedId(contentUri, id);  
 		return uri;  
 	}     
-	//下面是自定义的一个MusicInfo子类，实现了Parcelable，为的是可以将整个MusicInfo的ArrayList在Activity和Service中传送，=_=!!,但其实不用  
-	public static class MusicInfo implements Parcelable{                                         
-		private long id;  
-		private String title;  
-		private String album;  
-		private int duration;  
-		private long size;  
-		private String artist;        
-		private String url;       
-
-		public MusicInfo(){  
-
-		}  
-
-		public MusicInfo(long pId, String pTitle){  
-			id = pId;  
-			title = pTitle;  
-		}  
-
-		public String getArtist() {  
-			return artist;  
-		}  
-
-		public void setArtist(String artist) {  
-			this.artist = artist;  
-		}  
-
-		public long getSize() {  
-			return size;  
-		}  
-
-		public void setSize(long size) {  
-			this.size = size;  
-		}         
-
-		public long getId() {  
-			return id;  
-		}  
-
-		public void setId(long id) {  
-			this.id = id;  
-		}  
-
-		public String getTitle() {  
-			return title;  
-		}  
-
-		public void setTitle(String title) {  
-			this.title = title;  
-		}  
-
-		public String getAlbum() {  
-			return album;  
-		}  
-
-		public void setAlbum(String album) {  
-			this.album = album;  
-		}  
-
-		public int getDuration() {  
-			return duration;  
-		}  
-
-		public void setDuration(int duration) {  
-			this.duration = duration;  
-		}     
-
-		public String getUrl() {  
-			return url;  
-		}  
-
-		public void setUrl(String url) {  
-			this.url = url;  
-		}  
-
-		@Override  
-		public int describeContents() {  
-			return 0;  
-		}  
-
-		@Override  
-		public void writeToParcel(Parcel dest, int flags) {  
-			dest.writeLong(id);  
-			dest.writeString(title);  
-			dest.writeString(album);  
-			dest.writeString(artist);  
-			dest.writeString(url);  
-			dest.writeInt(duration);  
-			dest.writeLong(size);  
-		}  
-
-		public static final Parcelable.Creator<MusicInfo>   
-		CREATOR = new Creator<MusicLoader.MusicInfo>() {  
-
-			@Override  
-			public MusicInfo[] newArray(int size) {  
-				return new MusicInfo[size];  
-			}  
-
-			@Override  
-			public MusicInfo createFromParcel(Parcel source) {  
-				MusicInfo musicInfo = new MusicInfo();  
-				musicInfo.setId(source.readLong());  
-				musicInfo.setTitle(source.readString());  
-				musicInfo.setAlbum(source.readString());  
-				musicInfo.setArtist(source.readString());  
-				musicInfo.setUrl(source.readString());  
-				musicInfo.setDuration(source.readInt());  
-				musicInfo.setSize(source.readLong());  
-				return musicInfo;  
-			}  
-		};  
-	}  
 }  

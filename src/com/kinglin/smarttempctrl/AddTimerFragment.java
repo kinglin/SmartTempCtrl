@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.kinglin.dao.MyTimerDaoImp;
 import com.kinglin.model.MyTimer;
+import com.kinglin.tools.MusicInfo;
 import com.kinglin.tools.MusicLoader;
 
 @SuppressLint({ "InflateParams", "ShowToast" })
@@ -91,6 +92,13 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		ibtn_timercancle = (ImageButton)view.findViewById(R.id.ibtn_timercancle);
 		sb_downtime.setOnSeekBarChangeListener(this);
 
+		ibtn_circle.setBackgroundResource(R.drawable.timer_repeat);
+		ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_01);
+		ibtn_remark.setBackgroundResource(R.drawable.ic_launcher);
+		ibtn_music.setBackgroundResource(R.drawable.timer_button_music_01);
+		ibtn_timerconfirm.setBackgroundResource(R.drawable.timer_button_done_01);
+		ibtn_timercancle.setBackgroundResource(R.drawable.ic_launcher);
+		
 		//添加循环按钮响应
 		ibtn_circle.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -223,6 +231,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				int_content = 1;
+				ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_01);
 				popwin_content.dismiss();
 			}
 		});
@@ -230,6 +239,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				int_content = 2;
+				ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_02);
 				popwin_content.dismiss();
 			}
 		});
@@ -237,6 +247,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				int_content = 3;
+				ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_03);
 				popwin_content.dismiss();
 			}
 		});
@@ -244,6 +255,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				int_content = 4;
+				ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_04);
 				popwin_content.dismiss();
 			}
 		});
@@ -251,6 +263,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				int_content = 5;
+				ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_05);
 				popwin_content.dismiss();
 			}
 		});
@@ -258,6 +271,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				int_content = 6;
+				ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_06);
 				popwin_content.dismiss();
 			}
 		});
@@ -265,6 +279,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				int_content = 7;
+				ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_07);
 				popwin_content.dismiss();
 			}
 		});
@@ -272,6 +287,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				int_content = 8;
+				ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_08);
 				popwin_content.dismiss();
 			}
 		});
@@ -304,18 +320,11 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 
 	public void showPopMusic(View v) {
 		
-		MusicLoader musicLoader = MusicLoader.instance(getActivity().getContentResolver());
-		List<MusicLoader.MusicInfo> musicInfos = musicLoader.getMusicList();
+		MusicLoader musicLoader = new MusicLoader(getActivity().getContentResolver());
+		List<MusicInfo> musicInfos = musicLoader.getMusicList();
 		
 		View popView = getActivity().getLayoutInflater().inflate(R.layout.pop_choosemusic, null);
 		final PopupWindow popwin_music = new PopupWindow(popView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		
-		//控件初始化
-		lv_musiclist = (ListView)v.findViewById(R.id.lv_musiclist);
-
-		//将获取的音乐信息显示在listview上
-		updateMusicList(musicInfos);
-		
 		popwin_music.setFocusable(true);
 		popwin_music.setBackgroundDrawable(new ColorDrawable());
 		popwin_music.update();  
@@ -325,13 +334,17 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		v.getLocationOnScreen(location);
 		popwin_music.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1]);
 		
+		//控件初始化
+		lv_musiclist = (ListView)popView.findViewById(R.id.lv_musiclist);
+
+		//将获取的音乐信息显示在listview上
+		updateMusicList(musicInfos);
 		
 		//list条目点击响应
 		lv_musiclist.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-
 			}
 		});
 
@@ -383,13 +396,13 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 	public void onStopTrackingTouch(SeekBar seekBar) {
 	}
 
-	public void updateMusicList(List<MusicLoader.MusicInfo> musicInfos) {
+	public void updateMusicList(List<MusicInfo> musicInfos) {
 		
 		//lv_musiclist.removeAllViewsInLayout();
 		
 		if (musicInfos.size() != 0) {
 			List<HashMap<String, Object>> data = new ArrayList<HashMap<String,Object>>(); 
-			for( MusicLoader.MusicInfo musicInfo : musicInfos){  
+			for( MusicInfo musicInfo : musicInfos){  
 				HashMap<String, Object> item = new HashMap<String, Object>();
 				item.put("musicId", musicInfo.getId());
 				item.put("musicname", musicInfo.getTitle());

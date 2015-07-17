@@ -58,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
 	TimerTask tt = new TimerTask() {  
         @Override  
         public void run() {  
-            handler.sendMessageDelayed(handler.obtainMessage(0), 1000);  
+            handler.sendMessageDelayed(handler.obtainMessage(0), 500);  
         }  
     };  
     

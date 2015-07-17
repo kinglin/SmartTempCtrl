@@ -14,15 +14,13 @@
             android:layout_width="65dp"
 	        android:layout_height="65dp"
 	        android:scaleType="fitCenter"
-	        android:layout_alignParentLeft="true"
-	        android:src="@drawable/tag_cloud"/>
+	        android:layout_alignParentLeft="true"/>
          <ImageButton
             android:id="@+id/ibtn_setting"
             android:layout_width="65dp"
 	        android:layout_height="65dp"
 	        android:scaleType="fitCenter"
-	        android:layout_alignParentRight="true"
-	        android:src="@drawable/tag_setup"/>"
+	        android:layout_alignParentRight="true"/>"
     </RelativeLayout>
     
     <RelativeLayout 
@@ -41,22 +39,19 @@
             android:layout_width="65dp"
 	        android:layout_height="65dp"
 	        android:scaleType="fitCenter"
-	        android:layout_centerInParent="true"
-	        android:src="@drawable/button_main_01"/>
+	        android:layout_centerInParent="true"/>
         <ImageButton
             android:id="@+id/ibtn_timer"
             android:layout_width="65dp"
 	        android:layout_height="65dp"
 	        android:scaleType="fitCenter"
-	        android:layout_toLeftOf="@id/ibtn_temp"
-	        android:src="@drawable/button_timer_01"/>
+	        android:layout_toLeftOf="@id/ibtn_temp"/>
         <ImageButton
             android:id="@+id/ibtn_tools"
             android:layout_width="65dp"
 	        android:layout_height="65dp"
 	        android:scaleType="fitCenter"
-	        android:layout_toRightOf="@id/ibtn_temp"
-	        android:src="@drawable/button_gadget_01"/>
+	        android:layout_toRightOf="@id/ibtn_temp"/>
     </RelativeLayout>
 
 </LinearLayout>

@@ -50,6 +50,8 @@ public class TimerFragment extends Fragment {
 		ibtn_addtimer = (ImageButton) view.findViewById(R.id.ibtn_addtimer);
 		lv_timerlist = (ListView)view.findViewById(R.id.lv_timerlist);
 		
+		ibtn_addtimer.setBackgroundResource(R.drawable.timer_button_push_01);
+		
 		//更新定时器列表
 		MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
 		List<MyTimer> myTimers = mtdi.getAllMyTimers();
@@ -82,7 +84,7 @@ public class TimerFragment extends Fragment {
 		
 		if (myTimers.size() != 0) {
 			List<HashMap<String, Object>> data = new ArrayList<HashMap<String,Object>>(); 
-			for(MyTimer myTimer : myTimers){  
+ 			for(MyTimer myTimer : myTimers){  
 	            HashMap<String, Object> item = new HashMap<String, Object>();
 	            item.put("timerId", myTimer.getId());
 	            int downtime = (int) ((myTimer.getRingtime()-System.currentTimeMillis())/1000);

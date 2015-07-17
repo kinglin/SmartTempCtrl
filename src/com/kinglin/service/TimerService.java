@@ -55,7 +55,7 @@ public class TimerService extends Service {
 				for(MyTimer myTimer : myTimers){
 					
 					//如果到了闹铃时间					
-					if (myTimer.getRingtime() <= System.currentTimeMillis()) {
+					if (myTimer.getRingtime() <= System.currentTimeMillis() && myTimer.getTimeron()==1) {
 						//闹铃
 						RingTheReminder(myTimer);
 						

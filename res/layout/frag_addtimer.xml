@@ -36,8 +36,7 @@
 	    android:scaleType="fitCenter"
         android:layout_below="@+id/sb_downtime"
         android:layout_marginRight="14dp"
-        android:layout_toLeftOf="@+id/tv_circletime"
-        android:src="@drawable/timer_repeat" />
+        android:layout_toLeftOf="@+id/tv_circletime"/>
 
     <ImageButton
         android:id="@+id/ibtn_content"
@@ -46,8 +45,7 @@
 	    android:scaleType="fitCenter"
         android:layout_alignLeft="@+id/ibtn_circle"
         android:layout_below="@+id/ibtn_circle"
-        android:layout_marginTop="15dp"
-        android:src="@drawable/timer_sector_ico_01" />
+        android:layout_marginTop="15dp"/>
 
     <ImageButton
         android:id="@+id/ibtn_remark"
@@ -55,8 +53,7 @@
 	    android:layout_height="65dp"
 	    android:scaleType="fitCenter"
         android:layout_alignLeft="@+id/tv_circletime"
-        android:layout_alignTop="@+id/ibtn_content"
-        android:src="@drawable/ic_launcher" />
+        android:layout_alignTop="@+id/ibtn_content"/>
 
     <ImageButton
         android:id="@+id/ibtn_music"
@@ -65,8 +62,7 @@
 	    android:scaleType="fitCenter"
         android:layout_alignTop="@+id/ibtn_remark"
         android:layout_marginLeft="17dp"
-        android:layout_toRightOf="@+id/ibtn_remark"
-        android:src="@drawable/timer_button_music_01" />
+        android:layout_toRightOf="@+id/ibtn_remark"/>
 
     <ImageButton
         android:id="@+id/ibtn_timerconfirm"
@@ -75,8 +71,7 @@
 	    android:scaleType="fitCenter"
         android:layout_alignLeft="@+id/ibtn_content"
         android:layout_alignRight="@+id/tv_circletime"
-        android:layout_below="@+id/ibtn_content"
-        android:src="@drawable/timer_button_done_01" />
+        android:layout_below="@+id/ibtn_content"/>
 
     <ImageButton
         android:id="@+id/ibtn_timercancle"
@@ -84,7 +79,6 @@
 	    android:layout_height="65dp"
 	    android:scaleType="fitCenter"
         android:layout_alignLeft="@+id/ibtn_music"
-        android:layout_alignTop="@+id/ibtn_timerconfirm"
-        android:src="@drawable/ic_launcher" />
+        android:layout_alignTop="@+id/ibtn_timerconfirm"/>
 
 </RelativeLayout>
