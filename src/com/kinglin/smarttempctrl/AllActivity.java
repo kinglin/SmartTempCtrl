@@ -1,10 +1,6 @@
 package com.kinglin.smarttempctrl;
 
 
-import com.kinglin.smarttempctrl.AddTimerFragment.OnAddCancleClickListener;
-import com.kinglin.smarttempctrl.AddTimerFragment.OnAddConfirmClickListener;
-import com.kinglin.smarttempctrl.TimerFragment.OnAddClickListener;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -12,10 +8,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.kinglin.smarttempctrl.AddTimerFragment.OnAddCancleClickListener;
+import com.kinglin.smarttempctrl.AddTimerFragment.OnAddConfirmClickListener;
+import com.kinglin.smarttempctrl.TimerFragment.OnAddClickListener;
+
 public class AllActivity extends FragmentActivity {
 
+	
 	TimerFragment timerFragment;
 	AddTimerFragment addTimerFragment;
+	ShowTempFragment showTempFragment;
 	
 	ImageButton ibtn_members,ibtn_setting,ibtn_timer,ibtn_temp,ibtn_tools;
 	
@@ -28,11 +30,16 @@ public class AllActivity extends FragmentActivity {
 		
         addTimerFragment = new AddTimerFragment();
 		timerFragment = new TimerFragment();
+		showTempFragment = new ShowTempFragment();
         
 		//在初始的时候展示定时器列表
 		FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.relayout_all, timerFragment);
+        fragmentTransaction.add(R.id.relayout_all, addTimerFragment);
+        fragmentTransaction.add(R.id.relayout_all, showTempFragment);
+        fragmentTransaction.hide(addTimerFragment);
+        fragmentTransaction.hide(showTempFragment);
         fragmentTransaction.commit();
         
         //添加定时器的响应
@@ -41,7 +48,8 @@ public class AllActivity extends FragmentActivity {
 			public void GotoAddFragment() {
 				FragmentManager fm = getSupportFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				ft.replace(R.id.relayout_all, addTimerFragment);
+				ft.hide(timerFragment);
+				ft.show(addTimerFragment);
 				ft.commit();
 			}
 		});
@@ -52,7 +60,8 @@ public class AllActivity extends FragmentActivity {
 			public void ReturnToTimerList() {
 				FragmentManager fm = getSupportFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				ft.replace(R.id.relayout_all, timerFragment);
+				ft.hide(addTimerFragment);
+				ft.show(timerFragment);
 				ft.commit();
 			}
 		});
@@ -63,7 +72,8 @@ public class AllActivity extends FragmentActivity {
 			public void ReturnToTimerList() {
 				FragmentManager fm = getSupportFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				ft.replace(R.id.relayout_all, timerFragment);
+				ft.hide(addTimerFragment);
+				ft.show(timerFragment);
 				ft.commit();
 			}
 		});
@@ -75,6 +85,16 @@ public class AllActivity extends FragmentActivity {
 				FragmentManager fm = getSupportFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				ft.replace(R.id.relayout_all, timerFragment);
+				ft.commit();
+			}
+		});
+        
+        ibtn_temp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FragmentManager fm = getSupportFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				ft.replace(R.id.relayout_all, showTempFragment);
 				ft.commit();
 			}
 		});

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/iv_showheadpicture"
+        android:layout_width="60dp"
+	    android:layout_height="60dp"
+	    android:scaleType="fitCenter"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tv_static1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_showheadpicture"
+        android:layout_toLeftOf="@+id/iv_showheadpicture"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_showtempbefore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_showheadpicture"
+        android:layout_toRightOf="@+id/iv_showheadpicture"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_showtempcur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_static2"
+        android:layout_alignBottom="@+id/tv_static2"
+        android:layout_toRightOf="@+id/tv_static2"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/tv_static2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/iv_showheadpicture"
+        android:layout_below="@+id/tv_static1"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="14dp"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tv_showcurtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/iv_showheadpicture"
+        android:layout_below="@+id/tv_showtempcur"
+        android:layout_marginTop="18dp"
+        android:text="TextView" />
+
+    <ImageButton
+        android:id="@+id/ibtn_setalarm"
+        android:layout_width="50dp"
+	    android:layout_height="50dp"
+	    android:scaleType="fitCenter"
+        android:layout_below="@+id/tv_showtempcur"
+        android:layout_toLeftOf="@+id/tv_static1"/>
+
+</RelativeLayout>
