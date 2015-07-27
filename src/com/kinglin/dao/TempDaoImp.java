@@ -20,19 +20,28 @@ public class TempDaoImp implements TempDao {
 
 	@Override
 	public void addTemp(Temperature temperature) {
-		db.execSQL("insert into temp(tempId,temp) values(?,?)",
-				new Object[]{temperature.getTempId(),temperature.getTemp()});
+		Cursor cursor=db.rawQuery("select * from temperature",null);
+		if (cursor.getCount() == 0) {
+			db.execSQL("insert into temperature(time,temp) values(?,?)",
+					new Object[]{temperature.getTime(),temperature.getTemp()});
+		}else {
+			Temperature lasTemperature = getLastTemperature();
+			if (lasTemperature.getTime() != temperature.getTime()) {
+				db.execSQL("insert into temperature(time,temp) values(?,?)",
+						new Object[]{temperature.getTime(),temperature.getTemp()});
+			}
+		}
 	}
 
 	@Override
 	public List<Temperature> getAllTemperatures() {
 		List<Temperature> temperatures=new ArrayList<Temperature>();
-		Cursor cursor=db.rawQuery("select * from temp",null);
+		Cursor cursor=db.rawQuery("select * from temperature",null);
 		while (cursor.moveToNext()) {
-			long tempId=cursor.getLong(cursor.getColumnIndex("tempId"));
-			float temp=cursor.getFloat(cursor.getColumnIndex("temp"));
+			String time=cursor.getString(cursor.getColumnIndex("time"));
+			int temp=cursor.getInt(cursor.getColumnIndex("temp"));
 			
-			temperatures.add(new Temperature(tempId,temp));
+			temperatures.add(new Temperature(time,temp));
 		}
 		cursor.close();
 		return temperatures;
@@ -40,12 +49,43 @@ public class TempDaoImp implements TempDao {
 
 	@Override
 	public Temperature getLastTemperature() {
-		return null;
+		Temperature temperature = null;
+		Cursor cursor=db.rawQuery("select * from temperature",null);
+		if (cursor.getCount() == 1) {
+			String time=cursor.getString(cursor.getColumnIndex("time"));
+			int temp=cursor.getInt(cursor.getColumnIndex("temp"));
+			temperature = new Temperature(time, temp);
+		}else if (cursor.getCount() > 1) {
+			while (cursor.moveToNext()) {
+				if (cursor.isLast()) {
+					String time=cursor.getString(cursor.getColumnIndex("time"));
+					int temp=cursor.getInt(cursor.getColumnIndex("temp"));
+					temperature = new Temperature(time, temp);
+					break;
+				}
+			}
+		}
+		cursor.close();
+		return temperature;
 	}
 
 	@Override
 	public Temperature getSecLastTemperature() {
-		return null;
+		Temperature temperature = null;
+		Cursor cursor=db.rawQuery("select * from temperature",null);
+		if (cursor.getCount() > 1) {
+			while (cursor.moveToNext()) {
+				if (cursor.isLast()) {
+					cursor.moveToPrevious();
+					String time=cursor.getString(cursor.getColumnIndex("time"));
+					int temp=cursor.getInt(cursor.getColumnIndex("temp"));
+					temperature = new Temperature(time, temp);
+					break;
+				}
+			}
+		}
+		cursor.close();
+		return temperature;
 	}
 
 	@Override

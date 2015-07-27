@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_showheadpicture"
         android:layout_toLeftOf="@+id/iv_showheadpicture"
-        android:text="TextView" />
+        android:text="seclast temp" />
 
     <TextView
         android:id="@+id/tv_showtempbefore"
@@ -28,27 +28,6 @@
         android:layout_below="@+id/iv_showheadpicture"
         android:layout_toRightOf="@+id/iv_showheadpicture"
         android:text="TextView" />
-
-    <TextView
-        android:id="@+id/tv_showtempcur"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tv_static2"
-        android:layout_alignBottom="@+id/tv_static2"
-        android:layout_toRightOf="@+id/tv_static2"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/tv_static2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/iv_showheadpicture"
-        android:layout_below="@+id/tv_static1"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="14dp"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/tv_showcurtime"
@@ -66,5 +45,25 @@
 	    android:scaleType="fitCenter"
         android:layout_below="@+id/tv_showtempcur"
         android:layout_toLeftOf="@+id/tv_static1"/>
+
+    <TextView
+        android:id="@+id/tv_static2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_static1"
+        android:layout_marginTop="14dp"
+        android:layout_toLeftOf="@+id/tv_showcurtime"
+        android:text="last temp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tv_showtempcur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_showcurtime"
+        android:layout_alignTop="@+id/tv_static2"
+        android:layout_marginLeft="35dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

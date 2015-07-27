@@ -11,6 +11,12 @@ import android.util.Base64;
 import android.util.Log;
 
 @SuppressLint("SimpleDateFormat")
+
+/*
+ * 这个类是使用中国天气网api时使用
+ * 但由于获得不到实时天气，目前放弃使用
+ */
+
 public class SmartWeatherUrlUtil {  
     private final static String TAG = "WeatherUrlUtil";  
     private static final String MAC_NAME = "HmacSHA1";  

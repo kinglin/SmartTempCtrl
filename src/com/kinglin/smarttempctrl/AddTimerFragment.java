@@ -226,6 +226,15 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		ImageButton ibtn_life2 = (ImageButton) popView.findViewById(R.id.ibtn_life2);
 		ImageButton ibtn_life3 = (ImageButton) popView.findViewById(R.id.ibtn_life3);
 		ImageButton ibtn_life4 = (ImageButton) popView.findViewById(R.id.ibtn_life4);
+		
+		ibtn_food1.setBackgroundResource(R.drawable.timer_sector_ico_01);
+		ibtn_food2.setBackgroundResource(R.drawable.timer_sector_ico_02);
+		ibtn_food3.setBackgroundResource(R.drawable.timer_sector_ico_03);
+		ibtn_food4.setBackgroundResource(R.drawable.timer_sector_ico_04);
+		ibtn_life1.setBackgroundResource(R.drawable.timer_sector_ico_05);
+		ibtn_life2.setBackgroundResource(R.drawable.timer_sector_ico_06);
+		ibtn_life3.setBackgroundResource(R.drawable.timer_sector_ico_07);
+		ibtn_life4.setBackgroundResource(R.drawable.timer_sector_ico_08);
 
 		ibtn_food1.setOnClickListener(new View.OnClickListener() {
 			@Override

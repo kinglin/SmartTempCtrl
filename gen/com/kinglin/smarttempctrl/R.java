@@ -1703,7 +1703,7 @@ containing a value of this type.
         public static final int ibtn_members=0x7f09003f;
         public static final int ibtn_music=0x7f09004c;
         public static final int ibtn_remark=0x7f09004b;
-        public static final int ibtn_setalarm=0x7f090055;
+        public static final int ibtn_setalarm=0x7f090054;
         public static final int ibtn_setting=0x7f090040;
         public static final int ibtn_temp=0x7f090042;
         public static final int ibtn_timer=0x7f090043;
@@ -1756,13 +1756,13 @@ containing a value of this type.
         public static final int tv_musicduration=0x7f09005a;
         public static final int tv_musicname=0x7f090059;
         public static final int tv_showcircle=0x7f09005d;
-        public static final int tv_showcurtime=0x7f090054;
+        public static final int tv_showcurtime=0x7f090052;
         public static final int tv_showdowntime=0x7f09005c;
         public static final int tv_showremark=0x7f09005e;
         public static final int tv_showtempbefore=0x7f090051;
-        public static final int tv_showtempcur=0x7f090052;
+        public static final int tv_showtempcur=0x7f090053;
         public static final int tv_static1=0x7f090050;
-        public static final int tv_static2=0x7f090053;
+        public static final int tv_static2=0x7f090055;
         public static final int up=0x7f090001;
         public static final int useLogo=0x7f090013;
         public static final int withText=0x7f090018;

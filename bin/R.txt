@@ -402,7 +402,7 @@ int id ibtn_life4 0x7f09006d
 int id ibtn_members 0x7f09003f
 int id ibtn_music 0x7f09004c
 int id ibtn_remark 0x7f09004b
-int id ibtn_setalarm 0x7f090055
+int id ibtn_setalarm 0x7f090054
 int id ibtn_setting 0x7f090040
 int id ibtn_temp 0x7f090042
 int id ibtn_timer 0x7f090043
@@ -455,13 +455,13 @@ int id tv_musicartist 0x7f090058
 int id tv_musicduration 0x7f09005a
 int id tv_musicname 0x7f090059
 int id tv_showcircle 0x7f09005d
-int id tv_showcurtime 0x7f090054
+int id tv_showcurtime 0x7f090052
 int id tv_showdowntime 0x7f09005c
 int id tv_showremark 0x7f09005e
 int id tv_showtempbefore 0x7f090051
-int id tv_showtempcur 0x7f090052
+int id tv_showtempcur 0x7f090053
 int id tv_static1 0x7f090050
-int id tv_static2 0x7f090053
+int id tv_static2 0x7f090055
 int id up 0x7f090001
 int id useLogo 0x7f090013
 int id withText 0x7f090018

@@ -2,28 +2,32 @@ package com.kinglin.model;
 
 public class Temperature {
 
-	long tempId;
-	float temp;
+	String time;
+	int temp;
 	
-	public Temperature(long tempId,float temp){
-		this.tempId = tempId;
+	public Temperature(){
+	}
+	
+	public Temperature(String time,int temp){
+		this.time = time;
 		this.temp = temp;
 	}
-	
-	public long getTempId() {
-		return tempId;
+
+	public String getTime() {
+		return time;
 	}
 
-	public void setTempId(long tempId) {
-		this.tempId = tempId;
+	public void setTime(String time) {
+		this.time = time;
 	}
 
-	public float getTemp() {
+	public int getTemp() {
 		return temp;
 	}
 
-	public void setTemp(float temp) {
+	public void setTemp(int temp) {
 		this.temp = temp;
 	}
+
 
 }

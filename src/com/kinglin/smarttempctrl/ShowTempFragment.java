@@ -10,8 +10,20 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
+import com.kinglin.dao.TempDaoImp;
+import com.kinglin.model.Temperature;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +31,19 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.kinglin.tools.SmartWeatherUrlUtil;
-
+@SuppressLint({ "ShowToast", "HandlerLeak" })
 public class ShowTempFragment extends Fragment {
 
 	ImageView iv_showheadpicture;
 	TextView tv_showtempbefore,tv_showtempcur,tv_showcurtime;
 	ImageButton ibtn_setalarm;
+	
+	MyHandler myHandler;
+	
+	public static final int GET_WEATHER_SUCCESS = 1;
+	public static final int GET_WEATHER_FAILED = 2;
 	
 	public ShowTempFragment() {
 	}
@@ -55,8 +72,10 @@ public class ShowTempFragment extends Fragment {
 		
 		ibtn_setalarm.setBackgroundResource(R.drawable.ic_launcher);
 		
-		GetWeatherThread getWeatherThread = new GetWeatherThread();
-		getWeatherThread.start();
+		myHandler = new MyHandler();
+		
+//		GetWeatherThread getWeatherThread = new GetWeatherThread();
+//		getWeatherThread.start();
 		
 		ibtn_setalarm.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -67,38 +86,137 @@ public class ShowTempFragment extends Fragment {
 	
 	
 	public class GetWeatherThread extends Thread{
+		
+		Message msg = Message.obtain();
 		@Override
 		public void run() {
-			String strWeatherUrl = SmartWeatherUrlUtil.getInterfaceURL("101010100", "forecast_v");
-			HttpGet httpGet = new HttpGet(strWeatherUrl);
-			HttpClient client = new DefaultHttpClient();
-			InputStream inputStream = null;
-			try {
-				HttpResponse httpResponse = client.execute(httpGet);
-				HttpEntity httpEntity = httpResponse.getEntity();
-				inputStream = httpEntity.getContent();
-				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-				String line = "";
-				String result = "";
-				while((line = bufferedReader.readLine())!= null){
-					result = result + line;
-				}
-				analyzeJson(result);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			finally{
+			
+			//先判断网络状态
+			if (netWorkState(getActivity().getApplicationContext())==0) {
+				Toast.makeText(getActivity().getApplicationContext(),"you are offline", 1000).show();
+			}else {
+				/*
+				 * 这句是中国天气网api的使用
+				 * String strWeatherUrl = SmartWeatherUrlUtil.getInterfaceURL("101010100", "forecast_v");
+				 */
+				
+				/*
+				 * 以下是心知天气api的实现
+				 * 其中城市目前是写死为北京状态
+				 * 之后需要扩展为自动获取城市ID
+				 */
+				String strWeatherUrl="https://api.thinkpage.cn/v2/weather/now.json?city=CHBJ000000&language=zh-chs&unit=c&key=YEPKN68ZJ6";
+				HttpGet httpGet = new HttpGet(strWeatherUrl);
+				HttpClient client = new DefaultHttpClient();
+				InputStream inputStream = null;
 				try {
-					inputStream.close();
-				} catch (IOException e) {
+					HttpResponse httpResponse = client.execute(httpGet);
+					HttpEntity httpEntity = httpResponse.getEntity();
+					inputStream = httpEntity.getContent();
+					BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+					String line = "";
+					String result = "";
+					while((line = bufferedReader.readLine())!= null){
+						result = result + line;
+					}
+					analyzeJson(result);
+					
+					msg.arg1 = GET_WEATHER_SUCCESS;
+					
+				} catch (Exception e) {
 					e.printStackTrace();
+					msg.arg1 = GET_WEATHER_FAILED;
 				}
+				finally{
+					try {
+						inputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+						msg.arg1 = GET_WEATHER_FAILED;
+					}
+				}
+			}
+			myHandler.sendMessage(msg);
+		}
+	}
+	
+	//这个函数解析收到的json，获得天气信息并加入到数据库
+	public void analyzeJson(String str_responce) {
+		
+		try {
+			JSONTokener jsonTokener = new JSONTokener(str_responce);
+			JSONObject json_responce = (JSONObject) jsonTokener.nextValue();
+			
+			if (json_responce.getString("status").equals("OK")) {
+				String str_time = (String) json_responce.getJSONArray("weather").getJSONObject(0).get("last_update");
+				String time = str_time.substring(0, 10)+" "+str_time.substring(11, 19);
+				int temp = json_responce.getJSONArray("weather").getJSONObject(0).getJSONObject("now").getInt("temperature");
+				
+				Temperature temperature = new Temperature(time, temp);
+				
+				TempDaoImp tdi = new TempDaoImp(getActivity().getApplicationContext());
+				tdi.addTemp(temperature);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		GetWeatherThread getWeatherThread = new GetWeatherThread();
+		getWeatherThread.start();
+		
+		TempDaoImp tdi = new TempDaoImp(getActivity().getApplicationContext());
+		Temperature lastTemperature = tdi.getSecLastTemperature();
+		Temperature seclastTemperature = tdi.getSecLastTemperature();
+		
+		if (!seclastTemperature.getTime().equals("")) {
+			tv_showtempbefore.setText(seclastTemperature.getTemp());
+		}
+		if (!lastTemperature.getTime().equals("")) {
+			tv_showtempcur.setText(lastTemperature.getTemp());
+			tv_showcurtime.setText(lastTemperature.getTime());
+		}
+	}
+	
+	//线程处理UI的handler
+	public class MyHandler extends Handler{
+		MyHandler() {  
+			super(); 
+		}  
+		
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.arg1) {
+			case GET_WEATHER_SUCCESS:
+				Toast.makeText(getActivity().getApplicationContext(), "GET_WEATHER_SUCCESS", 1000).show();
+				break;
+			case GET_WEATHER_FAILED:
+				Toast.makeText(getActivity().getApplicationContext(), "GET_WEATHER_FAILED", 1000).show();
+				break;
+			default:
+				break;
 			}
 		}
 	}
 	
-	public void analyzeJson(String str_responce) {
-		
-	}
 
+	//判断是否联网，WiFi为2，移动网为1，未联网为0,获取信息失败为4
+	public int netWorkState(Context context) {
+		int  netState=4;
+		ConnectivityManager connectivity = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE); 
+		NetworkInfo activeNetInfo = connectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		NetworkInfo mobNetInfo = connectivity.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		if (activeNetInfo.isConnected()) {
+			netState=2;
+		}else if (mobNetInfo.isConnected()) {
+			netState=1;
+		}
+		if(!activeNetInfo.isConnected() && !mobNetInfo.isConnected()) {
+			netState=0;
+		}
+		return netState;
+	}
 }

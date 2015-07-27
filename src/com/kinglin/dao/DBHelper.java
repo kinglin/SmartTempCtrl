@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String timer_table="create table timer(timerId long primary key,ringtime long,circle long,timeron int,remark text,content int)";
-		String temp_table="create table temp(tempId long primary key,temp float)";
+		String temp_table="create table temperature(time text primary key,temp int)";
 		db.execSQL(timer_table); 
 		db.execSQL(temp_table);
 	}

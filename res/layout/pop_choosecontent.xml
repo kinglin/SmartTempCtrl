@@ -17,27 +17,27 @@
 
         <ImageButton
             android:id="@+id/ibtn_food1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/ibtn_food2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"/>
 
         <ImageButton
             android:id="@+id/ibtn_food3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"/>
 
         <ImageButton
             android:id="@+id/ibtn_food4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
     
@@ -53,27 +53,27 @@
 
         <ImageButton
             android:id="@+id/ibtn_life1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"/>
 
         <ImageButton
             android:id="@+id/ibtn_life2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"/>
 
         <ImageButton
             android:id="@+id/ibtn_life3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"/>
 
         <ImageButton
             android:id="@+id/ibtn_life4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" />
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"/>
 
     </LinearLayout>
 
