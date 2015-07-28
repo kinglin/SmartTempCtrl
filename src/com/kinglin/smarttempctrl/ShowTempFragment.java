@@ -165,19 +165,21 @@ public class ShowTempFragment extends Fragment {
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
-		GetWeatherThread getWeatherThread = new GetWeatherThread();
-		getWeatherThread.start();
-		
-		TempDaoImp tdi = new TempDaoImp(getActivity().getApplicationContext());
-		Temperature lastTemperature = tdi.getSecLastTemperature();
-		Temperature seclastTemperature = tdi.getSecLastTemperature();
-		
-		if (!seclastTemperature.getTime().equals("")) {
-			tv_showtempbefore.setText(seclastTemperature.getTemp());
-		}
-		if (!lastTemperature.getTime().equals("")) {
-			tv_showtempcur.setText(lastTemperature.getTemp());
-			tv_showcurtime.setText(lastTemperature.getTime());
+		if (isVisibleToUser) {
+			GetWeatherThread getWeatherThread = new GetWeatherThread();
+			getWeatherThread.start();
+			
+			TempDaoImp tdi = new TempDaoImp(getActivity().getApplicationContext());
+			Temperature lastTemperature = tdi.getSecLastTemperature();
+			Temperature seclastTemperature = tdi.getSecLastTemperature();
+			
+			if (!seclastTemperature.getTime().equals("")) {
+				tv_showtempbefore.setText(seclastTemperature.getTemp());
+			}
+			if (!lastTemperature.getTime().equals("")) {
+				tv_showtempcur.setText(lastTemperature.getTemp());
+				tv_showcurtime.setText(lastTemperature.getTime());
+			}
 		}
 	}
 	

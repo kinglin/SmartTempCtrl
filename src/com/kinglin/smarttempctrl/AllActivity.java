@@ -2,6 +2,7 @@ package com.kinglin.smarttempctrl;
 
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,11 @@ import com.kinglin.smarttempctrl.TimerFragment.OnAddClickListener;
 
 public class AllActivity extends FragmentActivity {
 
+	int CUR_FRAGMENT = 0;
+	public static final int TIMER_FRAGMENT = 1;
+	public static final int ADD_TIMER_FRAGMENT = 2;
+	public static final int SHOW_TEMP_FRAGMENT = 3;
+	
 	
 	TimerFragment timerFragment;
 	AddTimerFragment addTimerFragment;
@@ -40,6 +46,7 @@ public class AllActivity extends FragmentActivity {
         fragmentTransaction.add(R.id.relayout_all, showTempFragment);
         fragmentTransaction.hide(addTimerFragment);
         fragmentTransaction.hide(showTempFragment);
+        CUR_FRAGMENT = TIMER_FRAGMENT;
         fragmentTransaction.commit();
         
         //添加定时器的响应
@@ -50,6 +57,7 @@ public class AllActivity extends FragmentActivity {
 				FragmentTransaction ft = fm.beginTransaction();
 				ft.hide(timerFragment);
 				ft.show(addTimerFragment);
+				CUR_FRAGMENT = ADD_TIMER_FRAGMENT;
 				ft.commit();
 			}
 		});
@@ -62,6 +70,7 @@ public class AllActivity extends FragmentActivity {
 				FragmentTransaction ft = fm.beginTransaction();
 				ft.hide(addTimerFragment);
 				ft.show(timerFragment);
+				CUR_FRAGMENT = TIMER_FRAGMENT;
 				ft.commit();
 			}
 		});
@@ -74,6 +83,7 @@ public class AllActivity extends FragmentActivity {
 				FragmentTransaction ft = fm.beginTransaction();
 				ft.hide(addTimerFragment);
 				ft.show(timerFragment);
+				CUR_FRAGMENT = TIMER_FRAGMENT;
 				ft.commit();
 			}
 		});
@@ -84,17 +94,22 @@ public class AllActivity extends FragmentActivity {
 			public void onClick(View v) {
 				FragmentManager fm = getSupportFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				ft.replace(R.id.relayout_all, timerFragment);
+				ft.hide(getCurFragment());
+				ft.show(timerFragment);
+				CUR_FRAGMENT = TIMER_FRAGMENT;
 				ft.commit();
 			}
 		});
         
+        //下方温度按钮点击响应
         ibtn_temp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				FragmentManager fm = getSupportFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
-				ft.replace(R.id.relayout_all, showTempFragment);
+				ft.hide(getCurFragment());
+				ft.show(showTempFragment);
+				CUR_FRAGMENT = SHOW_TEMP_FRAGMENT;
 				ft.commit();
 			}
 		});
@@ -112,5 +127,19 @@ public class AllActivity extends FragmentActivity {
 		ibtn_timer.setBackgroundResource(R.drawable.button_timer_01);
 		ibtn_temp.setBackgroundResource(R.drawable.button_main_01);
 		ibtn_tools.setBackgroundResource(R.drawable.button_gadget_01);
+	}
+	
+	//获取当前显示的fragment
+	Fragment getCurFragment(){
+		switch (CUR_FRAGMENT) {
+		case TIMER_FRAGMENT:
+			return timerFragment;
+		case ADD_TIMER_FRAGMENT:
+			return addTimerFragment;
+		case SHOW_TEMP_FRAGMENT:
+			return showTempFragment;
+		default:
+			return timerFragment;
+		}
 	}
 }
