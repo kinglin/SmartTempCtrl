@@ -71,6 +71,9 @@ public class AllActivity extends FragmentActivity {
 				ft.hide(addTimerFragment);
 				ft.show(timerFragment);
 				CUR_FRAGMENT = TIMER_FRAGMENT;
+				
+				timerFragment.onShown();
+				
 				ft.commit();
 			}
 		});
@@ -84,6 +87,9 @@ public class AllActivity extends FragmentActivity {
 				ft.hide(addTimerFragment);
 				ft.show(timerFragment);
 				CUR_FRAGMENT = TIMER_FRAGMENT;
+				
+				timerFragment.onShown();
+				
 				ft.commit();
 			}
 		});
@@ -97,6 +103,9 @@ public class AllActivity extends FragmentActivity {
 				ft.hide(getCurFragment());
 				ft.show(timerFragment);
 				CUR_FRAGMENT = TIMER_FRAGMENT;
+				
+				timerFragment.onShown();
+				
 				ft.commit();
 			}
 		});
@@ -110,6 +119,9 @@ public class AllActivity extends FragmentActivity {
 				ft.hide(getCurFragment());
 				ft.show(showTempFragment);
 				CUR_FRAGMENT = SHOW_TEMP_FRAGMENT;
+				
+				showTempFragment.onShown();
+				
 				ft.commit();
 			}
 		});

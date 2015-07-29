@@ -52,6 +52,7 @@ public class TempDaoImp implements TempDao {
 		Temperature temperature = null;
 		Cursor cursor=db.rawQuery("select * from temperature",null);
 		if (cursor.getCount() == 1) {
+			cursor.moveToFirst();
 			String time=cursor.getString(cursor.getColumnIndex("time"));
 			int temp=cursor.getInt(cursor.getColumnIndex("temp"));
 			temperature = new Temperature(time, temp);
@@ -74,6 +75,7 @@ public class TempDaoImp implements TempDao {
 		Temperature temperature = null;
 		Cursor cursor=db.rawQuery("select * from temperature",null);
 		if (cursor.getCount() > 1) {
+			cursor.moveToFirst();
 			while (cursor.moveToNext()) {
 				if (cursor.isLast()) {
 					cursor.moveToPrevious();

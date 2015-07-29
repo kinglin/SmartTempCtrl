@@ -162,24 +162,26 @@ public class ShowTempFragment extends Fragment {
 		}
 	}
 	
-	@Override
-	public void setUserVisibleHint(boolean isVisibleToUser) {
-		super.setUserVisibleHint(isVisibleToUser);
-		if (isVisibleToUser) {
-			GetWeatherThread getWeatherThread = new GetWeatherThread();
-			getWeatherThread.start();
-			
-			TempDaoImp tdi = new TempDaoImp(getActivity().getApplicationContext());
-			Temperature lastTemperature = tdi.getSecLastTemperature();
-			Temperature seclastTemperature = tdi.getSecLastTemperature();
-			
-			if (!seclastTemperature.getTime().equals("")) {
-				tv_showtempbefore.setText(seclastTemperature.getTemp());
-			}
-			if (!lastTemperature.getTime().equals("")) {
-				tv_showtempcur.setText(lastTemperature.getTemp());
-				tv_showcurtime.setText(lastTemperature.getTime());
-			}
+	//当此fragment显示的时候调用
+	public void onShown() {
+		GetWeatherThread getWeatherThread = new GetWeatherThread();
+		getWeatherThread.start();
+		
+		TempDaoImp tdi = new TempDaoImp(getActivity().getApplicationContext());
+		Temperature lastTemperature = tdi.getLastTemperature();
+		Temperature seclastTemperature = tdi.getSecLastTemperature();
+		
+		if (seclastTemperature != null) {
+			tv_showtempbefore.setText(seclastTemperature.getTemp()+"");
+		}else {
+			tv_showtempbefore.setText("no data");
+		}
+		if (lastTemperature != null) {
+			tv_showtempcur.setText(lastTemperature.getTemp()+"");
+			tv_showcurtime.setText(lastTemperature.getTime());
+		}else {
+			tv_showtempcur.setText("no data");
+			tv_showcurtime.setText("no data");
 		}
 	}
 	

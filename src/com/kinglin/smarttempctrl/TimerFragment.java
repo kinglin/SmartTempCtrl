@@ -68,14 +68,11 @@ public class TimerFragment extends Fragment {
 		});
 	}
 	
-	@Override
-	public void setUserVisibleHint(boolean isVisibleToUser) {
-		super.setUserVisibleHint(isVisibleToUser);
-		if (isVisibleToUser) {
-			MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
-			List<MyTimer> myTimers = mtdi.getAllMyTimers();
-			updateListview(myTimers);
-		}
+	//当此fragment显示的时候调用
+	public void onShown() {
+		MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
+		List<MyTimer> myTimers = mtdi.getAllMyTimers();
+		updateListview(myTimers);
 	}
 
 	//listview刷新函数

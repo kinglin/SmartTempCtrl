@@ -143,6 +143,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 				long_circle = 0;
 				int_content = 1;
 				str_remark = "";
+				tv_circletime.setText("no circle");
 			}
 		});
 
