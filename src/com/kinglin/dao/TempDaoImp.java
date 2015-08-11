@@ -20,29 +20,30 @@ public class TempDaoImp implements TempDao {
 
 	@Override
 	public void addTemp(Temperature temperature) {
-		Cursor cursor=db.rawQuery("select * from temperature",null);
-		if (cursor.getCount() == 0) {
-			db.execSQL("insert into temperature(time,temp) values(?,?)",
-					new Object[]{temperature.getTime(),temperature.getTemp()});
-		}else {
-			Temperature lasTemperature = getLastTemperature();
-			if (lasTemperature.getTime() != temperature.getTime()) {
-				db.execSQL("insert into temperature(time,temp) values(?,?)",
-						new Object[]{temperature.getTime(),temperature.getTemp()});
-			}
-		}
+		db.execSQL("insert into temperature(time,temp) values(?,?)",
+				new Object[]{temperature.getTime(),temperature.getTemp()});
 	}
 
 	@Override
 	public List<Temperature> getAllTemperatures() {
+		String time;
+		int temp;
+		
 		List<Temperature> temperatures=new ArrayList<Temperature>();
 		Cursor cursor=db.rawQuery("select * from temperature",null);
-		while (cursor.moveToNext()) {
-			String time=cursor.getString(cursor.getColumnIndex("time"));
-			int temp=cursor.getInt(cursor.getColumnIndex("temp"));
+		if (cursor.moveToFirst()) {
+			time=cursor.getString(cursor.getColumnIndex("time"));
+			temp=cursor.getInt(cursor.getColumnIndex("temp"));
 			
 			temperatures.add(new Temperature(time,temp));
+			while (cursor.moveToNext()) {
+				time=cursor.getString(cursor.getColumnIndex("time"));
+				temp=cursor.getInt(cursor.getColumnIndex("temp"));
+				
+				temperatures.add(new Temperature(time,temp));
+			}
 		}
+		
 		cursor.close();
 		return temperatures;
 	}
@@ -76,6 +77,7 @@ public class TempDaoImp implements TempDao {
 		Cursor cursor=db.rawQuery("select * from temperature",null);
 		if (cursor.getCount() > 1) {
 			cursor.moveToFirst();
+			
 			while (cursor.moveToNext()) {
 				if (cursor.isLast()) {
 					cursor.moveToPrevious();

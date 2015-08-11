@@ -44,6 +44,7 @@ public class ShowTempFragment extends Fragment {
 	
 	public static final int GET_WEATHER_SUCCESS = 1;
 	public static final int GET_WEATHER_FAILED = 2;
+	public static final int OFF_LINE = 3;
 	
 	public ShowTempFragment() {
 	}
@@ -74,9 +75,6 @@ public class ShowTempFragment extends Fragment {
 		
 		myHandler = new MyHandler();
 		
-//		GetWeatherThread getWeatherThread = new GetWeatherThread();
-//		getWeatherThread.start();
-		
 		ibtn_setalarm.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -93,7 +91,7 @@ public class ShowTempFragment extends Fragment {
 			
 			//先判断网络状态
 			if (netWorkState(getActivity().getApplicationContext())==0) {
-				Toast.makeText(getActivity().getApplicationContext(),"you are offline", 1000).show();
+				msg.arg1 = OFF_LINE;
 			}else {
 				/*
 				 * 这句是中国天气网api的使用
@@ -199,6 +197,9 @@ public class ShowTempFragment extends Fragment {
 				break;
 			case GET_WEATHER_FAILED:
 				Toast.makeText(getActivity().getApplicationContext(), "GET_WEATHER_FAILED", 1000).show();
+				break;
+			case OFF_LINE:
+				Toast.makeText(getActivity().getApplicationContext(), "you are offline", 1000).show();
 				break;
 			default:
 				break;

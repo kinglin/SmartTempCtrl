@@ -1,10 +1,6 @@
 package com.kinglin.dao;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -26,8 +22,11 @@ public class MyTimerDaoImp implements MyTimerDao {
 
 	@Override
 	public void addTimer(MyTimer mytimer) {
-		db.execSQL("insert into timer(timerId,ringtime,circle,timeron,remark,content) values(?,?,?,?,?,?)",
-				new Object[]{mytimer.getId(),mytimer.getRingtime(),mytimer.getCircle(),mytimer.getTimeron(),mytimer.getRemark(),mytimer.getContent()});
+		if (!mytimer.isTimerAvaliable()) {
+			updateTimer(mytimer);
+		}
+		db.execSQL("insert into timer(timerId,ringtime,circle,timeron,remark,content,cleanstart,cleanend) values(?,?,?,?,?,?,?,?)",
+				new Object[]{mytimer.getId(),mytimer.getRingtime(),mytimer.getCircle(),mytimer.getTimeron(),mytimer.getRemark(),mytimer.getContent(),mytimer.getCleanstart(),mytimer.getCleanend()});
 	}
 
 	public List<MyTimer> getAllMyTimers() {
@@ -40,74 +39,42 @@ public class MyTimerDaoImp implements MyTimerDao {
 			int timeron=cursor.getInt(cursor.getColumnIndex("timeron"));
 			String remark=cursor.getString(cursor.getColumnIndex("remark"));
 			int content=cursor.getInt(cursor.getColumnIndex("content"));
+			long cleanstart=cursor.getLong(cursor.getColumnIndex("cleanstart"));
+			long cleanend=cursor.getLong(cursor.getColumnIndex("cleanend"));
 			
-			myTimers.add(new MyTimer(timerId,ringtime,circle,timeron,remark,content));
+			myTimers.add(new MyTimer(timerId,ringtime,circle,timeron,remark,content,cleanstart,cleanend));
 		}
 		cursor.close();
 		return myTimers;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void updateTimer(MyTimer myTimer) {
 		
-		long newRingTime,endRingTime,startRingTime;
-		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
-		Calendar c = Calendar.getInstance();
-		
-		//没循环就删除此定时器
 		if (myTimer.getCircle() == 0) {
+			
+			//循环为0则代表闹钟要被删除
 			deleteTimer(myTimer);
-		}else {
-			newRingTime = myTimer.getRingtime() + myTimer.getCircle();
-			Date curDate = new Date(newRingTime);
-			String str_time = formatter.format(curDate);
-			if (curDate.getHours()>=7 && curDate.getHours()<22) {
-			}else {
-				if (curDate.getHours()<24 && curDate.getHours()>=22 ) {
-					//拿到晚十点和早七点的毫秒数
-					try {
-						c.setTime(formatter.parse(str_time.substring(0, 10)+" 22:00:00"));
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					
-					endRingTime = c.getTimeInMillis();
-					startRingTime = endRingTime + 9*60*60*1000;
-					
-					//当响铃时间在晚十点到早七点，跳过响铃
-					while (true) {
-						newRingTime = newRingTime + myTimer.getCircle();
-						if (newRingTime < startRingTime) {
-							continue;
-						}else {
-							break;
-						}
-					}
-				}else {
-					try {
-						String str = str_time.substring(0, 10)+" 07:00:00";
-						c.setTime(formatter.parse(str));
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					
-					startRingTime = c.getTimeInMillis();
-					
-					//当响铃时间在晚十点到早七点，跳过响铃
-					while (true) {
-						newRingTime = newRingTime + myTimer.getCircle();
-						if (newRingTime < startRingTime) {
-							continue;
-						}else {
-							break;
-						}
-					}
+		}else if ((myTimer.getRingtime() + myTimer.getCircle()) < myTimer.getCleanstart()) {
+			
+			//表示下次闹铃时间在免打扰时间之前
+			myTimer.setRingtime(myTimer.getRingtime() + myTimer.getCircle());
+			db.execSQL("update timer set ringtime=? where timerId=?",
+					new Object[]{myTimer.getRingtime(),myTimer.getId()});
+		}else{
+			while (true) {
+				myTimer.setRingtime(myTimer.getRingtime() + myTimer.getCircle());
+				if (myTimer.getRingtime() < myTimer.getCleanend()) {
+					continue;
 				}
+				break;
 			}
 			
+			myTimer.setCleanstart(myTimer.getCleanstart() + 24*60*60*1000);
+			myTimer.setCleanend(myTimer.getCleanend() + 24*60*60*1000);
+			
 			//执行更新操作
-			db.execSQL("update timer set ringtime=? where timerId=?",
-					new Object[]{newRingTime,myTimer.getId()});
+			db.execSQL("update timer set ringtime=?,cleanstart=?,cleanend=? where timerId=?",
+					new Object[]{myTimer.getRingtime(),myTimer.getCleanstart(),myTimer.getCleanend(),myTimer.getId()});
 		}
 	}
 
@@ -115,4 +82,5 @@ public class MyTimerDaoImp implements MyTimerDao {
 	public void deleteTimer(MyTimer myTimer) {
 		db.execSQL("delete from timer where timerId=?", new Object[]{myTimer.getId()});
 	}
+	
 }

@@ -3,6 +3,8 @@ package com.kinglin.smarttempctrl;
 import java.util.List;
 import java.util.TimerTask;
 
+import com.kinglin.service.TimerService;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
@@ -14,6 +16,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
+import android.widget.Toast;
 
 @SuppressLint({ "NewApi", "HandlerLeak", "ShowToast" })
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -42,18 +45,18 @@ public class MainActivity extends ActionBarActivity {
         tt.run();
         
         //¿ªÆôTimerService
-//        if (isServiceRunning(getApplicationContext(), "com.kinglin.service.TimerService")) {
-//			Toast.makeText(getApplicationContext(), "TimerService is running.", 500).show();
-//		}else {
-//			Intent intent = new Intent(getApplicationContext(),TimerService.class);
-//			startService(intent);
-//			if (isServiceRunning(getApplicationContext(), "com.kinglin.service.TimerService")) {
-//				Toast.makeText(getApplicationContext(), "TimerService has been started", Toast.LENGTH_SHORT).show();
-//			}else {
-//				Toast.makeText(getApplicationContext(), "TimerService start failed", Toast.LENGTH_SHORT).show();
-//			}
-//			
-//		}
+        if (isServiceRunning(getApplicationContext(), "com.kinglin.service.TimerService")) {
+			Toast.makeText(getApplicationContext(), "TimerService is running.", 500).show();
+		}else {
+			Intent intent = new Intent(getApplicationContext(),TimerService.class);
+			startService(intent);
+			if (isServiceRunning(getApplicationContext(), "com.kinglin.service.TimerService")) {
+				Toast.makeText(getApplicationContext(), "TimerService has been started", Toast.LENGTH_SHORT).show();
+			}else {
+				Toast.makeText(getApplicationContext(), "TimerService start failed", Toast.LENGTH_SHORT).show();
+			}
+			
+		}
 	}
 	TimerTask tt = new TimerTask() {  
         @Override  

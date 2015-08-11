@@ -67,11 +67,10 @@
 
     <ImageButton
         android:id="@+id/ibtn_timerconfirm"
-        android:layout_width="wrap_content"
+        android:layout_width="65dp"
 	    android:layout_height="65dp"
 	    android:scaleType="fitCenter"
         android:layout_alignLeft="@+id/ibtn_content"
-        android:layout_alignRight="@+id/tv_circletime"
         android:layout_below="@+id/ibtn_content"/>
 
     <ImageButton
@@ -79,7 +78,7 @@
         android:layout_width="65dp"
 	    android:layout_height="65dp"
 	    android:scaleType="fitCenter"
-        android:layout_alignLeft="@+id/ibtn_music"
+        android:layout_alignLeft="@+id/tv_circletime"
         android:layout_alignTop="@+id/ibtn_timerconfirm"/>
 
 </RelativeLayout>

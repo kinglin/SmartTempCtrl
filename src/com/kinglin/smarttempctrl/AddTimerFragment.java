@@ -1,6 +1,9 @@
 package com.kinglin.smarttempctrl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +27,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
 import com.kinglin.dao.MyTimerDaoImp;
@@ -31,14 +36,15 @@ import com.kinglin.model.MyTimer;
 import com.kinglin.tools.MusicInfo;
 import com.kinglin.tools.MusicLoader;
 
-@SuppressLint({ "InflateParams", "ShowToast" })
+@SuppressLint({ "InflateParams", "ShowToast", "SimpleDateFormat" })
 public class AddTimerFragment extends Fragment implements OnSeekBarChangeListener{
 
 	SeekBar sb_downtime;
-	TextView tv_downtime,tv_circletime;
+	TextView tv_downtime,tv_circletime,tv_cleanstart,tv_cleanend;
 	ImageButton ibtn_circle,ibtn_content,ibtn_remark,ibtn_music,ibtn_timerconfirm,ibtn_timercancle;
 	EditText et_circle;
 	Button btn_circleconfirm;
+	TimePicker tp_cleanstart,tp_cleanend;
 	
 	ListView lv_musiclist;
 
@@ -47,6 +53,13 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 	long long_circle = 0;
 	int int_content = 1;
 	String str_remark = "";
+	long long_cleanstart = 0;
+	long long_cleanend = 0;
+	
+	//三个工具变量
+	SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+	Calendar c;
+	String str_time;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -125,15 +138,26 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onClick(View v) {
 				long long_currenttime = System.currentTimeMillis();
+				
+				//当结束时间小于开始时间，则结束时间调整为第二天这个时间
+				if (long_cleanstart >= long_cleanend) {
+					long_cleanend += 24*60*60*1000;
+				}
+				
 				myTimer = new MyTimer(long_currenttime, 
 						long_currenttime+long_downtime, 
 						long_circle, 
 						1, 
 						str_remark, 
-						int_content);
+						int_content,long_cleanstart,long_cleanend);
 				MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
 				mtdi.addTimer(myTimer);
 
+				if (!myTimer.isTimerAvaliable()) {
+					Toast.makeText(getActivity().getApplicationContext(), 
+							"ringtime is in clean time, it has been adjust to the first ringtime off the clean time", 500);
+				}
+				
 				if (null != myAddConfirmListener) {
 					myAddConfirmListener.ReturnToTimerList();
 				}
@@ -144,6 +168,8 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 				int_content = 1;
 				str_remark = "";
 				tv_circletime.setText("no circle");
+				long_cleanstart = 0;
+				long_cleanend = 0;
 			}
 		});
 
@@ -182,10 +208,47 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		location[1] = 50;
 		v.getLocationOnScreen(location);
 		popwin_circle.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1]);
-
+		
 		et_circle = (EditText)popView.findViewById(R.id.et_circle);
 		btn_circleconfirm = (Button)popView.findViewById(R.id.btn_circleconfirm);
+		tv_cleanstart = (TextView)popView.findViewById(R.id.tv_cleanstart);
+		tv_cleanend = (TextView)popView.findViewById(R.id.tv_cleanend);
+		tp_cleanstart = (TimePicker)popView.findViewById(R.id.tp_cleanstart);
+		tp_cleanend = (TimePicker)popView.findViewById(R.id.tp_cleanend);
 
+		tp_cleanstart.setIs24HourView(true);
+		tp_cleanend.setIs24HourView(true);
+		
+		c = Calendar.getInstance();
+		str_time = formatter.format(c.getTime()).substring(0, 10)+" ";
+		
+		tp_cleanstart.setOnTimeChangedListener(new OnTimeChangedListener() {
+			@Override
+			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+				tv_cleanstart.setText("start: " + hourOfDay + ":" + minute);
+				try {
+					c.setTime(formatter.parse(str_time + hourOfDay + ":" + minute + ":00"));
+					long_cleanstart = c.getTimeInMillis();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		tp_cleanend.setOnTimeChangedListener(new OnTimeChangedListener() {
+			@Override
+			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+				tv_cleanend.setText("start: " + hourOfDay + ":" + minute);
+				try {
+					c.setTime(formatter.parse(str_time + hourOfDay + ":" + minute + ":00"));
+					long_cleanend = c.getTimeInMillis();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		
 		btn_circleconfirm.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

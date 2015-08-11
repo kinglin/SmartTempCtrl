@@ -17,4 +17,5 @@ public interface MyTimerDao {
 	
 	//É¾³ý¶¨Ê±Æ÷
 	public void deleteTimer(MyTimer myTimer);
+	
 }

@@ -8,18 +8,32 @@ public class MyTimer {
 	int timeron; //定时器开关
 	String remark; //备注信息
 	int content; //提醒内容图片
+	long cleanstart; //免打扰时段开始时间
+	long cleanend; //免打扰时段结束时间
 	
 	public MyTimer() {
 	}
 
-	public MyTimer(long id,long ringtime,long circle,int timeron,String remark,int content) {
+	public MyTimer(long id,long ringtime,long circle,int timeron,String remark,int content,long cleanstart,long cleanend) {
 		this.id = id;
 		this.ringtime = ringtime;
 		this.circle = circle;
 		this.timeron = timeron;
 		this.remark = remark;
 		this.content = content;
+		this.cleanstart = cleanstart;
+		this.cleanend = cleanend;
 	}
+	
+	//工具函数，检测定时器时间是否在免打扰时段
+	public boolean isTimerAvaliable(){
+		
+		if (ringtime < cleanend && ringtime >cleanstart) {
+			return false;
+		}
+		return true;
+	}
+	
 	
 	public long getId() {
 		return id;
@@ -67,6 +81,22 @@ public class MyTimer {
 
 	public void setContent(int content) {
 		this.content = content;
+	}
+
+	public long getCleanstart() {
+		return cleanstart;
+	}
+
+	public void setCleanstart(long cleanstart) {
+		this.cleanstart = cleanstart;
+	}
+
+	public long getCleanend() {
+		return cleanend;
+	}
+
+	public void setCleanend(long cleanend) {
+		this.cleanend = cleanend;
 	}
 
 }

@@ -50,7 +50,7 @@ public class TimerFragment extends Fragment {
 		ibtn_addtimer = (ImageButton) view.findViewById(R.id.ibtn_addtimer);
 		lv_timerlist = (ListView)view.findViewById(R.id.lv_timerlist);
 		
-		ibtn_addtimer.setBackgroundResource(R.drawable.timer_button_push_01);
+//		ibtn_addtimer.setBackgroundResource(R.drawable.timer_button_push_01);
 		
 		//更新定时器列表
 		MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
