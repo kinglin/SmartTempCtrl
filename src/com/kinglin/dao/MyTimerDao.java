@@ -18,4 +18,10 @@ public interface MyTimerDao {
 	//删除定时器
 	public void deleteTimer(MyTimer myTimer);
 	
+	//打开定时器
+	public void startTimer(MyTimer myTimer);
+	
+	//关闭定时器
+	public void endTimer(MyTimer myTimer);
+	
 }

@@ -94,9 +94,32 @@ public class TempDaoImp implements TempDao {
 
 	@Override
 	public List<Temperature> getRecentTemperatures() {
-		return null;
+		
+		String time;
+		int temp;
+		int count = 0;
+		
+		List<Temperature> temperatures=new ArrayList<Temperature>();
+		Cursor cursor=db.rawQuery("select * from temperature",null);
+		if (cursor.moveToFirst()) {
+			time=cursor.getString(cursor.getColumnIndex("time"));
+			temp=cursor.getInt(cursor.getColumnIndex("temp"));
+			
+			temperatures.add(new Temperature(time,temp));
+			count ++;
+			while (cursor.moveToNext()) {
+				time=cursor.getString(cursor.getColumnIndex("time"));
+				temp=cursor.getInt(cursor.getColumnIndex("temp"));
+				
+				temperatures.add(new Temperature(time,temp));
+				count ++;
+				if (count >= 6) {
+					break;
+				}
+			}
+		}
+		
+		cursor.close();
+		return temperatures;
 	}
-
-	
-	
 }

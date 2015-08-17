@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,11 +16,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.kinglin.dao.TempDaoImp;
 import com.kinglin.model.Temperature;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -39,12 +48,14 @@ public class ShowTempFragment extends Fragment {
 	ImageView iv_showheadpicture;
 	TextView tv_showtempbefore,tv_showtempcur,tv_showcurtime;
 	ImageButton ibtn_setalarm;
+	LineChart lchart_recentTemp;
 	
 	MyHandler myHandler;
 	
 	public static final int GET_WEATHER_SUCCESS = 1;
 	public static final int GET_WEATHER_FAILED = 2;
 	public static final int OFF_LINE = 3;
+	public static final int WEATHER_NEWEST = 4;
 	
 	public ShowTempFragment() {
 	}
@@ -70,6 +81,7 @@ public class ShowTempFragment extends Fragment {
 		tv_showtempcur = (TextView) view.findViewById(R.id.tv_showtempcur);
 		tv_showcurtime = (TextView) view.findViewById(R.id.tv_showcurtime);
 		ibtn_setalarm = (ImageButton) view.findViewById(R.id.ibtn_setalarm);
+		lchart_recentTemp = (LineChart) view.findViewById(R.id.lchart_recentTemp);
 		
 		ibtn_setalarm.setBackgroundResource(R.drawable.ic_launcher);
 		
@@ -80,8 +92,58 @@ public class ShowTempFragment extends Fragment {
 			public void onClick(View v) {
 			}
 		});
+		
+		
 	}
 	
+	public void showChart(LineChart lineChart,LineData lineData){
+		
+		lineChart.setDrawBorders(false);
+		lineChart.setNoDataTextDescription("no weather data by now");
+		lineChart.setDrawGridBackground(false);
+		lineChart.setGridBackgroundColor(Color.WHITE);
+		lineChart.setTouchEnabled(false);
+		lineChart.setDragEnabled(false);
+		lineChart.setScaleEnabled(false);
+		lineChart.setPinchZoom(false);
+		lineChart.setBackgroundColor(Color.WHITE);
+		lineChart.setData(lineData);
+		
+		Legend legend = lineChart.getLegend();
+		legend.setForm(LegendForm.CIRCLE);
+		legend.setFormSize(6f);
+		legend.setTextColor(Color.BLACK);
+		
+		lineChart.animateX(2500);
+		
+	}
+	
+	public LineData getlLineData(List<Temperature> temperatures){
+		
+		ArrayList<String> xValues = new ArrayList<String>();
+		ArrayList<Entry> yValues = new ArrayList<Entry>();
+		
+		for (int i = 0; i < temperatures.size(); i++) {
+			xValues.add(temperatures.get(i).getTime().substring(11, 16));
+			yValues.add(new Entry(temperatures.get(i).getTemp(), i));
+		}
+		
+		LineDataSet lineDataSet = new LineDataSet(yValues, "Recent Temperature");
+		lineDataSet.setLineWidth(2f);
+		lineDataSet.setCircleSize(3f);
+		lineDataSet.setColor(Color.WHITE);
+		lineDataSet.setCircleColor(Color.WHITE);
+		lineDataSet.setHighLightColor(Color.WHITE);
+		lineDataSet.setDrawCubic(true);
+		lineDataSet.setCubicIntensity(0.5f);
+		
+		ArrayList<LineDataSet> lineDataSets = new ArrayList<LineDataSet>();
+		lineDataSets.add(lineDataSet);
+		
+		LineData lineData = new LineData(xValues, lineDataSets);
+		
+		return lineData;
+	}
 	
 	public class GetWeatherThread extends Thread{
 		
@@ -123,7 +185,7 @@ public class ShowTempFragment extends Fragment {
 					
 				} catch (Exception e) {
 					e.printStackTrace();
-					msg.arg1 = GET_WEATHER_FAILED;
+					msg.arg1 = WEATHER_NEWEST;
 				}
 				finally{
 					try {
@@ -168,6 +230,7 @@ public class ShowTempFragment extends Fragment {
 		TempDaoImp tdi = new TempDaoImp(getActivity().getApplicationContext());
 		Temperature lastTemperature = tdi.getLastTemperature();
 		Temperature seclastTemperature = tdi.getSecLastTemperature();
+		List<Temperature> recentTemperatures = tdi.getRecentTemperatures();
 		
 		if (seclastTemperature != null) {
 			tv_showtempbefore.setText(seclastTemperature.getTemp()+"");
@@ -181,6 +244,8 @@ public class ShowTempFragment extends Fragment {
 			tv_showtempcur.setText("no data");
 			tv_showcurtime.setText("no data");
 		}
+		
+		showChart(lchart_recentTemp, getlLineData(recentTemperatures));
 	}
 	
 	//线程处理UI的handler
@@ -200,6 +265,9 @@ public class ShowTempFragment extends Fragment {
 				break;
 			case OFF_LINE:
 				Toast.makeText(getActivity().getApplicationContext(), "you are offline", 1000).show();
+				break;
+			case WEATHER_NEWEST:
+				Toast.makeText(getActivity().getApplicationContext(), "it's already the newest.", 1000).show();
 				break;
 			default:
 				break;

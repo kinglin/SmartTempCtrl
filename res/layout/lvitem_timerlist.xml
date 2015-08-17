@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp" 
-    android:background="@drawable/timer_button_push_01">
+    android:id="@+id/relayout_lvitem_timer"
+    android:background="#FFFFFF">
 
     <ImageView
         android:id="@+id/iv_showcontent"
@@ -10,8 +11,7 @@
         android:layout_height="50dp"
 	    android:scaleType="fitCenter"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_launcher" />
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/tv_showdowntime"
@@ -20,7 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/iv_showcontent"
         android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/tv_showcircle"
@@ -40,13 +40,12 @@
         android:layout_toRightOf="@+id/tv_showdowntime"
         android:text="TextView" />
 
-    <ImageView
-        android:id="@+id/iv_showtimeron"
+    <ImageButton
+        android:id="@+id/ibtn_showtimeron"
         android:layout_width="50dp"
-        android:layout_height="50dp"
-	    android:scaleType="fitCenter"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_launcher" />
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter" />
 
 </RelativeLayout>

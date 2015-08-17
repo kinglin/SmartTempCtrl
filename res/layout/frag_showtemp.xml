@@ -66,4 +66,18 @@
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ibtn_setalarm"
+        android:orientation="vertical" >
+        
+        <com.github.mikephil.charting.charts.LineChart
+	        android:id="@+id/lchart_recentTemp"
+	        android:layout_width="match_parent"
+	        android:layout_height="150dp" />
+    </LinearLayout>
+
 </RelativeLayout>

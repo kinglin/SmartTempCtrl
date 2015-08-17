@@ -25,8 +25,8 @@ public class MyTimerDaoImp implements MyTimerDao {
 		if (!mytimer.isTimerAvaliable()) {
 			updateTimer(mytimer);
 		}
-		db.execSQL("insert into timer(timerId,ringtime,circle,timeron,remark,content,cleanstart,cleanend) values(?,?,?,?,?,?,?,?)",
-				new Object[]{mytimer.getId(),mytimer.getRingtime(),mytimer.getCircle(),mytimer.getTimeron(),mytimer.getRemark(),mytimer.getContent(),mytimer.getCleanstart(),mytimer.getCleanend()});
+		db.execSQL("insert into timer(timerId,ringtime,circle,timeron,remark,content,cleanstart,cleanend,musicurl) values(?,?,?,?,?,?,?,?,?)",
+				new Object[]{mytimer.getId(),mytimer.getRingtime(),mytimer.getCircle(),mytimer.getTimeron(),mytimer.getRemark(),mytimer.getContent(),mytimer.getCleanstart(),mytimer.getCleanend(),mytimer.getMusicUrl()});
 	}
 
 	public List<MyTimer> getAllMyTimers() {
@@ -41,8 +41,9 @@ public class MyTimerDaoImp implements MyTimerDao {
 			int content=cursor.getInt(cursor.getColumnIndex("content"));
 			long cleanstart=cursor.getLong(cursor.getColumnIndex("cleanstart"));
 			long cleanend=cursor.getLong(cursor.getColumnIndex("cleanend"));
+			String musicUrl=cursor.getString(cursor.getColumnIndex("musicurl"));
 			
-			myTimers.add(new MyTimer(timerId,ringtime,circle,timeron,remark,content,cleanstart,cleanend));
+			myTimers.add(new MyTimer(timerId,ringtime,circle,timeron,remark,content,cleanstart,cleanend,musicUrl));
 		}
 		cursor.close();
 		return myTimers;
@@ -81,6 +82,18 @@ public class MyTimerDaoImp implements MyTimerDao {
 	@Override
 	public void deleteTimer(MyTimer myTimer) {
 		db.execSQL("delete from timer where timerId=?", new Object[]{myTimer.getId()});
+	}
+
+	@Override
+	public void startTimer(MyTimer myTimer) {
+		db.execSQL("update timer set timeron=? where timerId=?",
+				new Object[]{1,myTimer.getId()});
+	}
+
+	@Override
+	public void endTimer(MyTimer myTimer) {
+		db.execSQL("update timer set timeron=? where timerId=?",
+				new Object[]{0,myTimer.getId()});
 	}
 	
 }

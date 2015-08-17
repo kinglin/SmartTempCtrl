@@ -20,7 +20,6 @@ public class AllActivity extends FragmentActivity {
 	public static final int ADD_TIMER_FRAGMENT = 2;
 	public static final int SHOW_TEMP_FRAGMENT = 3;
 	
-	
 	TimerFragment timerFragment;
 	AddTimerFragment addTimerFragment;
 	ShowTempFragment showTempFragment;

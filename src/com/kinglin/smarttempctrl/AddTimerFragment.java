@@ -55,6 +55,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 	String str_remark = "";
 	long long_cleanstart = 0;
 	long long_cleanend = 0;
+	String str_musicUrl = "";
 	
 	//三个工具变量
 	SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
@@ -149,7 +150,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 						long_circle, 
 						1, 
 						str_remark, 
-						int_content,long_cleanstart,long_cleanend);
+						int_content,long_cleanstart,long_cleanend,str_musicUrl);
 				MyTimerDaoImp mtdi = new MyTimerDaoImp(getActivity());
 				mtdi.addTimer(myTimer);
 
@@ -170,6 +171,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 				tv_circletime.setText("no circle");
 				long_cleanstart = 0;
 				long_cleanend = 0;
+				str_musicUrl = "";
 			}
 		});
 
@@ -181,6 +183,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 				long_circle = 0;
 				int_content = 1;
 				str_remark = "";
+				str_musicUrl = "";
 
 				if (null != myAddCancleListener) {
 					myAddCancleListener.ReturnToTimerList();
@@ -238,7 +241,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 		tp_cleanend.setOnTimeChangedListener(new OnTimeChangedListener() {
 			@Override
 			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-				tv_cleanend.setText("start: " + hourOfDay + ":" + minute);
+				tv_cleanend.setText("end: " + hourOfDay + ":" + minute);
 				try {
 					c.setTime(formatter.parse(str_time + hourOfDay + ":" + minute + ":00"));
 					long_cleanend = c.getTimeInMillis();
@@ -394,7 +397,7 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 	public void showPopMusic(View v) {
 		
 		MusicLoader musicLoader = new MusicLoader(getActivity().getContentResolver());
-		List<MusicInfo> musicInfos = musicLoader.getMusicList();
+		final List<MusicInfo> musicInfos = musicLoader.getMusicList();
 		
 		View popView = getActivity().getLayoutInflater().inflate(R.layout.pop_choosemusic, null);
 		final PopupWindow popwin_music = new PopupWindow(popView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -418,6 +421,8 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				str_musicUrl = musicInfos.get(position).getUrl();
+				popwin_music.dismiss();
 			}
 		});
 

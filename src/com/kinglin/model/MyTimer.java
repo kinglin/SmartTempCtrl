@@ -10,11 +10,12 @@ public class MyTimer {
 	int content; //提醒内容图片
 	long cleanstart; //免打扰时段开始时间
 	long cleanend; //免打扰时段结束时间
+	String musicUrl; //音乐路径
 	
 	public MyTimer() {
 	}
 
-	public MyTimer(long id,long ringtime,long circle,int timeron,String remark,int content,long cleanstart,long cleanend) {
+	public MyTimer(long id,long ringtime,long circle,int timeron,String remark,int content,long cleanstart,long cleanend,String musicUrl) {
 		this.id = id;
 		this.ringtime = ringtime;
 		this.circle = circle;
@@ -23,6 +24,7 @@ public class MyTimer {
 		this.content = content;
 		this.cleanstart = cleanstart;
 		this.cleanend = cleanend;
+		this.musicUrl = musicUrl;
 	}
 	
 	//工具函数，检测定时器时间是否在免打扰时段
@@ -97,6 +99,14 @@ public class MyTimer {
 
 	public void setCleanend(long cleanend) {
 		this.cleanend = cleanend;
+	}
+
+	public String getMusicUrl() {
+		return musicUrl;
+	}
+
+	public void setMusicUrl(String musicUrl) {
+		this.musicUrl = musicUrl;
 	}
 
 }
