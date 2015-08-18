@@ -83,7 +83,7 @@ public class ShowTempFragment extends Fragment {
 		ibtn_setalarm = (ImageButton) view.findViewById(R.id.ibtn_setalarm);
 		lchart_recentTemp = (LineChart) view.findViewById(R.id.lchart_recentTemp);
 		
-		ibtn_setalarm.setBackgroundResource(R.drawable.ic_launcher);
+		ibtn_setalarm.setBackgroundResource(R.drawable.alarm_off);
 		
 		myHandler = new MyHandler();
 		
@@ -96,6 +96,7 @@ public class ShowTempFragment extends Fragment {
 		
 	}
 	
+	//显示图表，设置图表的外观属性
 	public void showChart(LineChart lineChart,LineData lineData){
 		
 		lineChart.setDrawBorders(false);
@@ -118,6 +119,7 @@ public class ShowTempFragment extends Fragment {
 		
 	}
 	
+	//把温度数据转化成图表所需的数据
 	public LineData getlLineData(List<Temperature> temperatures){
 		
 		ArrayList<String> xValues = new ArrayList<String>();
@@ -130,10 +132,10 @@ public class ShowTempFragment extends Fragment {
 		
 		LineDataSet lineDataSet = new LineDataSet(yValues, "Recent Temperature");
 		lineDataSet.setLineWidth(2f);
-		lineDataSet.setCircleSize(3f);
-		lineDataSet.setColor(Color.WHITE);
-		lineDataSet.setCircleColor(Color.WHITE);
-		lineDataSet.setHighLightColor(Color.WHITE);
+		lineDataSet.setCircleSize(4f);
+		lineDataSet.setColor(Color.BLACK);
+		lineDataSet.setCircleColor(Color.BLACK);
+		lineDataSet.setHighLightColor(Color.BLACK);
 		lineDataSet.setDrawCubic(true);
 		lineDataSet.setCubicIntensity(0.5f);
 		

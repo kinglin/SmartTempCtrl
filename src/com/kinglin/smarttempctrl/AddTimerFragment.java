@@ -108,10 +108,10 @@ public class AddTimerFragment extends Fragment implements OnSeekBarChangeListene
 
 		ibtn_circle.setBackgroundResource(R.drawable.timer_repeat);
 		ibtn_content.setBackgroundResource(R.drawable.timer_sector_ico_01);
-		ibtn_remark.setBackgroundResource(R.drawable.ic_launcher);
+		ibtn_remark.setBackgroundResource(R.drawable.timer_handle_01);
 		ibtn_music.setBackgroundResource(R.drawable.timer_button_music_01);
 		ibtn_timerconfirm.setBackgroundResource(R.drawable.timer_button_done_01);
-		ibtn_timercancle.setBackgroundResource(R.drawable.ic_launcher);
+		ibtn_timercancle.setBackgroundResource(R.drawable.timer_button_icos_pre);
 		
 		//添加循环按钮响应
 		ibtn_circle.setOnClickListener(new View.OnClickListener() {

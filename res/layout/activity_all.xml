@@ -10,17 +10,20 @@
         android:layout_height="80dp"
         >
          <ImageButton
-            android:id="@+id/ibtn_members"
-            android:layout_width="65dp"
-	        android:layout_height="50dp"
-	        android:scaleType="fitCenter"
-	        android:layout_alignParentLeft="true"/>
-         <ImageButton
             android:id="@+id/ibtn_setting"
             android:layout_width="65dp"
 	        android:layout_height="65dp"
 	        android:scaleType="fitCenter"
-	        android:layout_alignParentRight="true"/>"
+	        android:layout_alignParentRight="true"/>
+
+         <ImageButton
+             android:id="@+id/ibtn_members"
+             android:layout_width="65dp"
+             android:layout_height="50dp"
+             android:layout_alignParentLeft="true"
+             android:layout_centerVertical="true"
+             android:scaleType="fitCenter" />
+
     </RelativeLayout>
     
     <RelativeLayout 
@@ -33,6 +36,7 @@
     <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:gravity="bottom"
        >
          <ImageButton
             android:id="@+id/ibtn_temp"
@@ -40,18 +44,25 @@
 	        android:layout_height="65dp"
 	        android:scaleType="fitCenter"
 	        android:layout_centerInParent="true"/>
+
         <ImageButton
             android:id="@+id/ibtn_timer"
             android:layout_width="65dp"
-	        android:layout_height="65dp"
-	        android:scaleType="fitCenter"
-	        android:layout_toLeftOf="@id/ibtn_temp"/>
+            android:layout_height="65dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="28dp"
+            android:layout_toLeftOf="@+id/ibtn_temp"
+            android:scaleType="fitCenter" />
+
         <ImageButton
             android:id="@+id/ibtn_tools"
             android:layout_width="65dp"
-	        android:layout_height="65dp"
-	        android:scaleType="fitCenter"
-	        android:layout_toRightOf="@id/ibtn_temp"/>
+            android:layout_height="65dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="24dp"
+            android:layout_toRightOf="@+id/ibtn_temp"
+            android:scaleType="fitCenter" />
+
     </RelativeLayout>
 
 </LinearLayout>

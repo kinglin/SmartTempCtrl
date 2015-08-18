@@ -58,7 +58,7 @@
 
     <ImageButton
         android:id="@+id/ibtn_music"
-        android:layout_width="65dp"
+        android:layout_width="80dp"
 	    android:layout_height="65dp"
 	    android:scaleType="fitCenter"
         android:layout_alignTop="@+id/ibtn_remark"
